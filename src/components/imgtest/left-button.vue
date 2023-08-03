@@ -13,22 +13,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="image-hosting-buttons">
-                        <button @click="setFilterType('all')" data-type="all">全部</button>
-                        <button @click="setFilterType('foreign')" data-type="foreign">国外图床</button>
-                        <button @click="setFilterType('domestic')" data-type="domestic">国内图床</button>
-                        <button @click="setFilterType('CDN')" data-type="CDN">CDN</button>
-                        <button @click="setFilterType('direct')" data-type="direct">直连</button>
+                        <button :class="{ 'ButtonActive': filterType === 'all' }" @click="setFilterType('all')">全部</button>
+                        <button :class="{ 'ButtonActive': filterType === 'foreign' }"
+                            @click="setFilterType('foreign')">国外图床</button>
+                        <button :class="{ 'ButtonActive': filterType === 'domestic' }"
+                            @click="setFilterType('domestic')">国内图床</button>
+                        <button :class="{ 'ButtonActive': filterType === 'CDN' }" @click="setFilterType('CDN')">CDN</button>
+                        <button :class="{ 'ButtonActive': filterType === 'direct' }"
+                            @click="setFilterType('direct')">直连</button>
                     </div>
                     <div class="dataBox dataDiv">
                         <div v-for="(item, index) in filteredData" :key="index"
-                            :class="{ 'shadow dataContent': true, 'Boxactiv': initialData.includes(item) }"
+                            :class="{ 'shadow dataContent': true, 'dataContentActive': initialData.includes(item) }"
                             @click="selectItem(index, item)" :index="index">
                             <span>{{ item.name }}</span>
                         </div>
                     </div>
                     <div class="select dataDiv">
                         <div v-for="(item, index) in initialData" :key="index" @click="removeSelectedItem(index)">
-                            <span>{{ filteredData[item].name }}</span>
+                            <span>{{ item.name }}</span>
                         </div>
                     </div>
                 </div>
@@ -78,7 +81,7 @@ export default {
     data() {
         return {
             selectedIndexes: [], // 存储选中的index
-            initialData: [], // 用于存储子组件发送的筛选后的数据
+            initialData: [], // 用于存储的选择数据
             filterType: "all", // 存储筛选类型
             NewfilteredData: [],
         };
@@ -102,38 +105,43 @@ export default {
             }
 
         },
-        selectedData() {
-            return this.selectedIndexes.map(index => this.NewfilteredData[index]);
-        },
     },
     methods: {
         selectItem(index, item) {
-            if (!this.selectedIndexes.includes(index)) {
-                this.selectedIndexes.push(index);
+            if (!this.initialData.includes(item)) {
                 this.initialData.push(item);
             } else {
-                this.selectedIndexes = this.selectedIndexes.filter(i => i !== index);
-                this.initialData = this.initialData.filter(selectedItem => selectedItem !== item);
+                this.initialData = this.initialData.filter(idata => idata !== item);
             }
-            console.log(this.initialData[0]);
-
         },
         sendSelectedIndexes() {
-            this.$emit('selected-indexes', this.selectedData);
+            // let obj = this.initialData
+            // this.$emit('selected-indexes', this.initialData);
         },
         removeSelectedItem(index) {
-            // 在点击事件中删除选中的index
-            this.selectedIndexes.splice(index, 1);
+            const selectedItem = this.initialData[index];
+            const filteredIndex = this.filteredData.findIndex(item => item === selectedItem);
+            const selectedIndex = this.selectedIndexes.indexOf(filteredIndex);
+            if (filteredIndex !== -1) {
+                this.initialData.splice(index, 1);
+                if (selectedIndex !== -1) {
+                    this.selectedIndexes.splice(selectedIndex, 1);
+                }
+            }
         },
         setFilterType(type) {
             this.filterType = type;
         },
-    },
-
+    }
 };
 </script>
 <style scoped>
-.Boxactiv {
+.ButtonActive {
+    background-color: #03a9f4 !important;
+    color: #fff;
+}
+
+.dataContentActive {
     background-color: #FF9800;
     color: white;
 }
@@ -193,9 +201,10 @@ export default {
 }
 
 .select div {
-    border: 1px solid;
+    border: 2px #9E9E9E;
     margin: 10px;
     padding: 5px;
+    border-style: dashed;
 }
 
 @media (max-width: 550px) {
@@ -213,22 +222,29 @@ export default {
 @media (max-width: 600px) {
     .dataDiv {
         display: block !important;
-        column-gap: 4px;
+        column-gap: 0px;
         column-count: 2;
         margin-top: 10px;
     }
 
     .dataContent {
         text-align: center;
-        padding: 10px !important;
-        margin: 0px;
+        margin: 5px;
 
+    }
+
+    .dataContent:nth-child(1) {
+        margin-top: 0px;
     }
 
     .select div {
         text-align: center;
         padding: 10px;
-        margin: 0px;
+        margin: 5px;
+    }
+
+    .select div:nth-child(1) {
+        margin-top: 0px;
     }
 }
 </style>
