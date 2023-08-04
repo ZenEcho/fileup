@@ -24,20 +24,20 @@
                     </div>
                     <div class="dataBox dataDiv">
                         <div v-for="(item, index) in filteredData" :key="index"
-                            :class="{ 'shadow dataContent': true, 'dataContentActive': initialData.includes(item) }"
+                            :class="{ 'shadow dataContent': true, 'dataContentActive': NewfilteredData.includes(item) }"
                             @click="selectItem(index, item)" :index="index">
                             <span>{{ item.name }}</span>
                         </div>
                     </div>
                     <div class="select dataDiv">
-                        <div v-for="(item, index) in initialData" :key="index" @click="removeSelectedItem(index)">
+                        <div v-for="(item, index) in NewfilteredData" :key="index" @click="removeSelectedItem(index)">
                             <span>{{ item.name }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" @click="sendSelectedIndexes">对比</button>
+                    <button type="button" class="btn btn-primary" @click="sendSelected">对比</button>
                 </div>
             </div>
         </div>
@@ -80,53 +80,47 @@ export default {
     emits: ['selected-indexes'], // 声明自定义事件
     data() {
         return {
-            selectedIndexes: [], // 存储选中的index
-            initialData: [], // 用于存储的选择数据
+            NewfilteredData: [], // 用于存储的选择数据
             filterType: "all", // 存储筛选类型
-            NewfilteredData: [],
         };
     },
     computed: {
         filteredData() {
             if (this.filterType === 'foreign') {
-                return this.NewfilteredData = this.data.filter(item => item.region === 0);
+                return  this.data.filter(item => item.region === 0);
             }
             if (this.filterType === 'all') {
-                return this.NewfilteredData = this.data;
+                return  this.data;
             }
             if (this.filterType === 'domestic') {
-                return this.NewfilteredData = this.data.filter(item => item.region === "CN");
+                return  this.data.filter(item => item.region === "CN");
             }
             if (this.filterType === 'CDN') {
-                return this.NewfilteredData = this.data.filter(item => item.CDN === 1);
+                return this.data.filter(item => item.CDN === 1);
             }
             if (this.filterType === 'direct') {
-                return this.NewfilteredData = this.data.filter(item => item.CDN === 0);
+                return this.data.filter(item => item.CDN === 0);
             }
 
         },
     },
     methods: {
         selectItem(index, item) {
-            if (!this.initialData.includes(item)) {
-                this.initialData.push(item);
+            if (!this.NewfilteredData.includes(item)) {
+                this.NewfilteredData.push(item);
             } else {
-                this.initialData = this.initialData.filter(idata => idata !== item);
+                this.NewfilteredData = this.NewfilteredData.filter(idata => idata !== item);
             }
         },
-        sendSelectedIndexes() {
-            // let obj = this.initialData
-            // this.$emit('selected-indexes', this.initialData);
+        sendSelected() {
+            const NewfilteredDataCopy = [...this.NewfilteredData]; // 复制数组
+            this.$emit('selected-indexes', NewfilteredDataCopy);
         },
         removeSelectedItem(index) {
-            const selectedItem = this.initialData[index];
+            const selectedItem = this.NewfilteredData[index];
             const filteredIndex = this.filteredData.findIndex(item => item === selectedItem);
-            const selectedIndex = this.selectedIndexes.indexOf(filteredIndex);
             if (filteredIndex !== -1) {
-                this.initialData.splice(index, 1);
-                if (selectedIndex !== -1) {
-                    this.selectedIndexes.splice(selectedIndex, 1);
-                }
+                this.NewfilteredData.splice(index, 1);
             }
         },
         setFilterType(type) {
@@ -143,7 +137,7 @@ export default {
 
 .dataContentActive {
     background-color: #FF9800;
-    color: white;
+    color: white !important;
 }
 
 .vsButton {
@@ -193,6 +187,11 @@ export default {
     margin: 10px;
     padding: 10px;
     user-select: none;
+    border: solid 1px #eee;
+    color: #2196f3;
+}
+.dataContent:hover {
+    transform: scale3d(1.05, 1.05, 1.05);
 }
 
 .select {
@@ -205,6 +204,7 @@ export default {
     margin: 10px;
     padding: 5px;
     border-style: dashed;
+    color: #FF9800;
 }
 
 @media (max-width: 550px) {
@@ -230,7 +230,6 @@ export default {
     .dataContent {
         text-align: center;
         margin: 5px;
-
     }
 
     .dataContent:nth-child(1) {

@@ -1,0 +1,195 @@
+h1 {
+    color: white;
+}
+
+#section0 .app_neme {
+    display: flex;
+    justify-content: center;
+}
+
+#section0 .app_neme h1 {
+    font-size: 8rem;
+    margin: 0;
+    line-height: 200px;
+}
+
+#section0 .app_neme img {
+    width: 200px;
+    height: 200px;
+}
+
+.DownloadButton{
+    margin: 8px;
+}
+#section0 {
+    background-image: linear-gradient(180deg, #00BCD4, #f5cfff);
+}
+
+#section1 {
+    background-image: linear-gradient(180deg, #f5cfff, #00BCD4)
+}
+
+
+
+#section1 .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#section2 {
+    background-image: linear-gradient(180deg, #00BCD4, #8fffc7);
+    display: flex;
+    justify-content: center;
+}
+
+:root {
+    --ellipse: 6.25rem;
+}
+
+#section2 h1 {
+    font-size: 4rem;
+    color: #333;
+    width: 40rem;
+    position: relative;
+}
+
+#section2 h1::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    background-image: linear-gradient(to left, #1a2a6c, #b21f1f, #fdbb2d);
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    clip-path: ellipse(var(--ellipse) var(--ellipse) at 0% 50%);
+    animation: move 5s infinite;
+}
+
+@keyframes move {
+
+    0%,
+    100% {
+        clip-path: ellipse(var(--ellipse) var(--ellipse) at 0% 50%);
+    }
+
+    50% {
+        clip-path: ellipse(var(--ellipse) var(--ellipse) at 100% 50%);
+    }
+}
+
+#section2 .button button {
+    width: 22rem;
+    color: white;
+    font-size: 3em;
+    background: none;
+    border: none;
+    border-bottom: white 2px solid;
+}
+
+#section2 .button button:hover {
+    border-bottom: #0dcaf0 2px solid;
+}
+
+#section3 {
+    background-image: linear-gradient(180deg, #8fffc7, #0dcaf0);
+}
+
+
+#section4 {
+    background-image: linear-gradient(180deg, #0dcaf0, #03A9F4);
+}
+
+#section4 h1 {
+    font-size: 8rem;
+}
+
+#section4 h2 {
+    color: white;
+    text-align: center;
+    font-size: 4rem;
+}
+
+@media screen and (max-width: 800px) {
+
+    /* 小于 */
+    .image-container img {
+        max-width: 400px;
+    }
+
+    #section0 .app_neme h1 {
+        font-size: 4rem;
+        line-height: 96px;
+    }
+
+    #section0 .app_neme img {
+        width: 96px;
+        height: 96px;
+    }
+
+    #section4 h1 {
+        font-size: 4rem;
+    }
+
+    #section4 h2 {
+        font-size: 3rem;
+
+    }
+
+}
+
+@media screen and (max-width: 1200px) {
+
+    /* 小于 */
+    #section2 {
+        padding: 1rem 0;
+    }
+
+    #section2 h1 {
+        font-size: 3em;
+        margin-bottom: 1rem;
+        width: 30rem;
+    }
+
+
+}
+
+@media screen and (min-width: 800px) {
+
+    /* 大于 */
+    .image-container img {
+        max-width: 600px;
+    }
+
+
+}
+
+
+@media screen and (min-width:1000px) {
+
+    /* 大于 */
+
+
+}
+
+@media screen and (min-width:1025px) {
+
+    /* 大于 */
+    .image-container img {
+        max-width: 800px;
+    }
+
+}
+
+@media screen and (min-width:1235px) {
+
+    /* 大于 */
+}
+
+@media screen and (min-width:1921px) {
+    .image-container img {
+        max-width: 1000px;
+    }
+}

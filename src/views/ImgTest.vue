@@ -8,15 +8,19 @@ import leftButton from '../components/imgtest/left-button.vue'
     <Header></Header>
   </section>
   <div class="container-fluid">
-    <section class="wrapperBox" v-if="isCountdownFinished">
+    <section class="wrapperBox" v-if="isCountdownFinished" :class="{
+      count1: RenderingData.length === 1,
+      count2: RenderingData.length === 2,
+      count3: RenderingData.length > 2
+    }">
       <div class="box" v-for="(item, index) in RenderingData.slice(0, 6)" :key="index">
-        <h3><a :href="item.link" target="_blank">{{ item.name }}</a></h3>
+        <h3><a :href="item.link" target="_blank" data-bs-toggle="tooltip" :title="item.link">{{ item.name }}</a></h3>
         <p style="font-size: 0.9em;">{{ item.introduce }}</p>
         <div class="image">
           <div class="loading" v-if="!item.loaded"></div>
           <div class="alert alert-danger" role="alert" v-if="item.loadFailed">图片加载失败</div>
           <img :src="item.image" :style="{ display: item.loaded ? 'block' : 'none' }" @load="onImageLoad(item)"
-            @error="onImageError(item)" v-if="!item.loadFailed" />
+            @error="onImageError(item)" v-if="!item.loadFailed" data-bs-toggle="tooltip" :title="item.image" />
         </div>
         <p class="text-center row" style="font-size: 0.9em;">
           <span class="loadingTime col" style="color: #dc3545;">{{ item.loadTime }}</span>
@@ -45,7 +49,7 @@ import leftButton from '../components/imgtest/left-button.vue'
       {{ countdown }} 秒后获取数据...
     </div>
     <div class="alert alert-dark text-center" role="alert">
-      电脑配置越高加载时间越精准
+      加载时间会受电脑配置影响仅供参考,精确加载时间请打开控制面板查看
     </div>
   </div>
   <section class="footer-section">
@@ -120,11 +124,13 @@ export default {
       this.RenderingData = array;
     },
     getImageSize(item) {
+      item.fileSizeInMB = "图片大小:获取中..."
       fetch("https://cors-anywhere.pnglog.com/" + item.image, {
         method: 'HEAD'
       })
         .then(response => {
           if (!response.ok) {
+            item.fileSizeInMB = "图片大小:获取失败"
             throw new Error('Network response was not ok');
           }
           return response.headers.get('content-length');
@@ -132,6 +138,7 @@ export default {
         .then(fileSize => {
           if (!fileSize) {
             item.fileSizeInMB = "图片大小:数据为空"
+            return;
           }
           const fileSizeInMB = (parseInt(fileSize) / (1024 * 1024)).toFixed(2);
           item.fileSizeInMB = "图片大小:" + fileSizeInMB + "MB"
@@ -159,12 +166,12 @@ export default {
     },
 
     selectedData(selectedData) {
-      let NULLobj = []
-      this.PageRendering(NULLobj)
       if (selectedData.length) {
+        let NULLobj = []
+        this.PageRendering(NULLobj)
         setTimeout(() => {
           this.PageRendering(selectedData);
-        }, 800);
+        }, 600);
       }
 
     },
@@ -172,7 +179,7 @@ export default {
   mounted() {
     this.startCountdown();
 
-    document.title = "盘络图床大对比";
+    document.title = "图床大比拼-2023年图床选什么?";
     const favicon = document.querySelector('link[rel="icon"]');
     favicon.href = "src/assets/images/up.ico";
 
