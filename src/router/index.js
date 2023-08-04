@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/imgtest',
       name: 'imgtest',
       component: () => import('../views/ImgTest.vue')
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('../views/test.vue')
     }
   ]
 })

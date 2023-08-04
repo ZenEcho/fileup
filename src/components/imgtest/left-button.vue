@@ -1,3 +1,4 @@
+
 <template>
     <!-- Button trigger modal -->
     <button type="button" class="btn text-white vsButton" data-bs-toggle="modal" data-bs-target="#VSModal">VS</button>
@@ -45,32 +46,74 @@
     <div class="modal fade" id="SLModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">收录说明</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-12 text-center">
-                        <h1>加入收录</h1>
-                        <h5>满足以下条件：</h5>
-                        <p>1.没有禁止国内/国外访问</p>
-                        <p>2.将测试图：https://images5.alphacoders.com/129/1298529.jpg 上传到图床</p>
-                        <p>3.到<a href="https://github.com/ZenEcho/fileup.dev/issues" target="_blank">GitHub提交信息</a></p>
-                        <p>4.信息格式：图床名称,图床链接,测试图url,图床描述</p>
+                <form @submit.prevent="handleSubmit">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">收录说明</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="https://github.com/ZenEcho/fileup.dev/issues" style="color: white;text-decoration: none;"
-                        type="button" class="btn btn-primary" target="_blank">去申请</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">知道了</button>
-                </div>
+                    <div class="modal-body">
+                        <div class="col-12 text-center">
+                            <h1>加入收录</h1>
+                            <h5>满足以下条件：</h5>
+                            <p>1.没有禁止国内/国外访问,允许用户注册</p>
+                            <p>2.将测试图：https://images5.alphacoders.com/129/1298529.jpg 上传到图床</p>
+                        </div>
+                    </div>
+                    <!-- Your form content will go here -->
+                    <div class="mx-auto mb-3" style="width: 28em;">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ImageHostingName">图床名称</span>
+                            <input v-model="postData.ImageHostingName" type="text" class="form-control"
+                                aria-describedby="ImageHostingName" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ImageHostingLink">图床链接</span>
+                            <input v-model="postData.ImageHostingLink" type="text" class="form-control"
+                                aria-describedby="ImageHostingLink" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="TestImageURL">测试图URL</span>
+                            <input v-model="postData.TestImageURL" type="text" class="form-control"
+                                aria-describedby="TestImageURL" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="EmailAddress">联系邮箱</span>
+                            <input v-model="postData.EmailAddress" type="text" class="form-control"
+                                aria-describedby="EmailAddress" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ImageHostingDescription">图床描述(40字)</span>
+                            <input v-model="postData.ImageHostingDescription" type="text" class="form-control"
+                                aria-describedby="ImageHostingDescription" maxlength="40">
+                        </div>
+                        <div class="input-group mb-3" :class="{ VerificationError: isVerificationError }">
+                            <span class="input-group-text" id="Verification">验证码</span>
+                            <input v-model="Verification" type="text" class="form-control" aria-describedby="Verification">
+                            <div class="get-code" @click="refreshCode()">
+                                <s-identify :identifyCode="identifyCode" style=" margin-left: 0.5em; "></s-identify>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">申请</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">算了</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import SIdentify from "@/components/SIdentify.vue";
+import { useToast } from "vue-toastification";
 export default {
+
+    components: { SIdentify },
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     props: {
         data: {
             type: Array,
@@ -82,18 +125,30 @@ export default {
         return {
             NewfilteredData: [], // 用于存储的选择数据
             filterType: "all", // 存储筛选类型
+            postData: {
+                ImageHostingName: '',
+                ImageHostingLink: '',
+                TestImageURL: '',
+                ImageHostingDescription: '',
+                EmailAddress: '',
+            },
+            Verification: "",
+            isVerificationError: false,
+            identifyCode: "",
+            identifyCodes: "0123456789abcdwerwshdjeJKDHRJHKOOPLMKQ",//绘制的随机数
         };
     },
+    created() { this.refreshCode() },
     computed: {
         filteredData() {
             if (this.filterType === 'foreign') {
-                return  this.data.filter(item => item.region === 0);
+                return this.data.filter(item => item.region === 0);
             }
             if (this.filterType === 'all') {
-                return  this.data;
+                return this.data;
             }
             if (this.filterType === 'domestic') {
-                return  this.data.filter(item => item.region === "CN");
+                return this.data.filter(item => item.region === "CN");
             }
             if (this.filterType === 'CDN') {
                 return this.data.filter(item => item.CDN === 1);
@@ -103,6 +158,7 @@ export default {
             }
 
         },
+
     },
     methods: {
         selectItem(index, item) {
@@ -126,10 +182,94 @@ export default {
         setFilterType(type) {
             this.filterType = type;
         },
+        handleSubmit() {
+
+            if (this.identifyCode !== this.Verification) {
+                this.refreshCode()
+                this.isVerificationError = true;
+                this.toast.warning("输入正确的验证码");
+                setTimeout(() => {
+                    this.isVerificationError = false;
+                }, 800)
+                return
+            } else {
+                this.refreshCode()
+                const url = 'http://localhost:3000/submit-form';
+                const formData = JSON.stringify(this.postData);
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message); 
+                        this.toast.success("发送成功!");
+                        this.postData.ImageHostingName = '';
+                        this.postData.ImageHostingLink = '';
+                        this.postData.TestImageURL = '';
+                        this.postData.ImageHostingDescription = '';
+                        this.postData.EmailAddress = '';
+                        this.Verification = '';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.toast.error("发送错误!");
+                    });
+            }
+
+        },
+
+        refreshCode() {
+            this.identifyCode = "";
+            this.makeCode(this.identifyCodes, 4);
+        },
+        randomNum(min, max) {
+            max = max + 1
+            return Math.floor(Math.random() * (max - min) + min)
+        },
+        // 随机生成验证码字符串
+        makeCode(data, len) {
+            for (let i = 0; i < len; i++) {
+                this.identifyCode += data[this.randomNum(0, data.length - 1)]
+            }
+        }
     }
 };
 </script>
 <style scoped>
+.VerificationError {
+    animation: shake 1s;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+
+
+}
+
 .ButtonActive {
     background-color: #03a9f4 !important;
     color: #fff;
@@ -190,6 +330,7 @@ export default {
     border: solid 1px #eee;
     color: #2196f3;
 }
+
 .dataContent:hover {
     transform: scale3d(1.05, 1.05, 1.05);
 }

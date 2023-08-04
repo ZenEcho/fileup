@@ -66,6 +66,7 @@ import leftButton from '../components/imgtest/left-button.vue'
 </template>
 
 <script>
+ import { useToast } from "vue-toastification";
 export default {
   components: {
     leftButton, // 注册子组件
