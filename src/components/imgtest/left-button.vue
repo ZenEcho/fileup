@@ -55,8 +55,8 @@
                         <div class="col-12 text-center">
                             <h1>加入收录</h1>
                             <h5>满足以下条件：</h5>
-                            <p>1.没有禁止国内/国外访问,允许用户注册</p>
-                            <p>2.将测试图：https://images5.alphacoders.com/129/1298529.jpg 上传到图床</p>
+                            <p>1.必须允许注册</p>
+                            <p>2.上传测试图：https://images5.alphacoders.com/129/1298529.jpg</p>
                         </div>
                     </div>
                     <!-- Your form content will go here -->
@@ -85,6 +85,29 @@
                             <span class="input-group-text" id="ImageHostingDescription">图床描述(40字)</span>
                             <input v-model="postData.ImageHostingDescription" type="text" class="form-control"
                                 aria-describedby="ImageHostingDescription" maxlength="40">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="ImageHostingRegion"
+                                    v-model="postData.ImageHostingRegion">
+                                <label class="form-check-label" for="ImageHostingRegion">
+                                    大陆服务器
+                                </label>
+                            </div>
+                            <div class="form-check" style="margin-left: 10px;">
+                                <input class="form-check-input" type="checkbox" id="ImageHostingCDN"
+                                    v-model="postData.ImageHostingCDN">
+                                <label class="form-check-label" for="ImageHostingCDN">
+                                    使用CDN
+                                </label>
+                            </div>
+                            <div class="form-check" style="margin-left: 10px;">
+                                <input class="form-check-input" type="checkbox" id="ImageHostingRegister"
+                                    v-model="postData.ImageHostingRegister">
+                                <label class="form-check-label" for="ImageHostingRegister">
+                                    免注册可用
+                                </label>
+                            </div>
                         </div>
                         <div class="input-group mb-3" :class="{ VerificationError: isVerificationError }">
                             <span class="input-group-text" id="Verification">验证码</span>
@@ -131,6 +154,9 @@ export default {
                 TestImageURL: '',
                 ImageHostingDescription: '',
                 EmailAddress: '',
+                ImageHostingRegion: false,
+                ImageHostingCDN: true,
+                ImageHostingRegister: true,
             },
             Verification: "",
             isVerificationError: false,
@@ -184,7 +210,7 @@ export default {
         },
         handleSubmit() {
 
-            if (this.identifyCode !== this.Verification) {
+            if (this.identifyCode == this.Verification) {
                 this.refreshCode()
                 this.isVerificationError = true;
                 this.toast.warning("输入正确的验证码");
@@ -205,14 +231,18 @@ export default {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data.message); 
-                        this.toast.success("发送成功!");
-                        this.postData.ImageHostingName = '';
-                        this.postData.ImageHostingLink = '';
-                        this.postData.TestImageURL = '';
-                        this.postData.ImageHostingDescription = '';
-                        this.postData.EmailAddress = '';
-                        this.Verification = '';
+                        console.log(data);
+                        if (data.status) {
+                            this.toast.success(data.message);
+                            this.postData.ImageHostingName = '';
+                            this.postData.ImageHostingLink = '';
+                            this.postData.TestImageURL = '';
+                            this.postData.ImageHostingDescription = '';
+                            this.postData.EmailAddress = '';
+                            this.Verification = '';
+                        } else {
+                            this.toast.error(data.message);
+                        }
                     })
                     .catch(error => {
                         console.error('Error:', error);
