@@ -220,7 +220,7 @@ export default {
                 return
             } else {
                 this.refreshCode()
-                const url = 'http://localhost:3000/submit-form';
+                const url = 'http://localhost:3000/Join-VSorPK';
                 const formData = JSON.stringify(this.postData);
                 fetch(url, {
                     method: 'POST',
