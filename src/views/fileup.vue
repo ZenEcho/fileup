@@ -3,7 +3,7 @@
 </script>
 <template>
   <section class="main-section"
-    style="position: sticky; top: 0px; z-index: 10; background-color: #00BCD4; font-size: 1.5em;">
+    style="position: sticky; top: 0px; z-index: 10; background-color: #00BCD4; ">
     <Navbar></Navbar>
   </section>
   <full-page :options="options" id="fullpage" ref="fullpage">

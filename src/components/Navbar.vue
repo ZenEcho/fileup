@@ -4,7 +4,8 @@
             <div class="container">
                 <img v-if="isHomeRoute" src="@/assets/logo.ico" style="height: 36px;">
                 <img v-else-if="isImgTestRoute" src="@/assets/images/up.ico" style="height: 36px;">
-                <span>2023年免费图床</span>
+                <span v-if="isHomeRoute">盘络上传</span>
+                <span v-else-if="isImgTestRoute" >2023年免费图床</span>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -13,6 +14,7 @@
                     <div class="navbar-nav" style="text-align: right;">
                         <a class="nav-link" aria-current="page" href="/">盘络上传</a>
                         <a class="nav-link nav-link-activ" href="/imgtest">图床比拼</a>
+                        <a class="nav-link nav-link-activ" href="/login">控制面板</a>
                     </div>
                 </div>
             </div>
@@ -38,11 +40,13 @@ export default {
 <style scoped>
 .navbar span {
     color: white;
+    font-size: 1.5em;
 }
 
 .navbar {
     background-color: transparent;
     color: #dddddd;
+    
 }
 
 .nav-link {

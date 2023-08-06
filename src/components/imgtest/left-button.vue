@@ -109,12 +109,11 @@
                                 </label>
                             </div>
                         </div>
+
                         <div class="input-group mb-3" :class="{ VerificationError: isVerificationError }">
                             <span class="input-group-text" id="Verification">验证码</span>
                             <input v-model="Verification" type="text" class="form-control" aria-describedby="Verification">
-                            <div class="get-code" @click="refreshCode()">
-                                <s-identify :identifyCode="identifyCode" style=" margin-left: 0.5em; "></s-identify>
-                            </div>
+                            <img :src="captchaImage" @click="refreshCaptcha" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -131,8 +130,6 @@
 import SIdentify from "@/components/SIdentify.vue";
 import { useToast } from "vue-toastification";
 export default {
-
-    components: { SIdentify },
     setup() {
         const toast = useToast();
         return { toast }
@@ -158,13 +155,12 @@ export default {
                 ImageHostingCDN: true,
                 ImageHostingRegister: true,
             },
-            Verification: "",
+            captchaImage: "", //验证码url
+            Verification: "", // 输入的验证码
             isVerificationError: false,
-            identifyCode: "",
-            identifyCodes: "0123456789abcdwerwshdjeJKDHRJHKOOPLMKQ",//绘制的随机数
         };
     },
-    created() { this.refreshCode() },
+    // created() { this.refreshCode() },
     computed: {
         filteredData() {
             if (this.filterType === 'foreign') {
@@ -184,7 +180,6 @@ export default {
             }
 
         },
-
     },
     methods: {
         selectItem(index, item) {
@@ -209,64 +204,81 @@ export default {
             this.filterType = type;
         },
         handleSubmit() {
-
-            if (this.identifyCode == this.Verification) {
-                this.refreshCode()
-                this.isVerificationError = true;
-                this.toast.warning("输入正确的验证码");
-                setTimeout(() => {
-                    this.isVerificationError = false;
-                }, 800)
-                return
-            } else {
-                this.refreshCode()
-                const url = 'http://localhost:3000/Join-VSorPK';
-                const formData = JSON.stringify(this.postData);
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: formData
+            fetch('http://localhost:3199/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ Verification: this.Verification }),
+                credentials: 'include',
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status) {
+                        this.sendVSorPK()
+                    } else {
+                        //验证码错误
+                        this.isVerificationError = true;
+                        setTimeout(() => {
+                            this.isVerificationError = false;
+                        }, 800)
+                        this.toast.error(data.message);
+                    }
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        if (data.status) {
-                            this.toast.success(data.message);
-                            this.postData.ImageHostingName = '';
-                            this.postData.ImageHostingLink = '';
-                            this.postData.TestImageURL = '';
-                            this.postData.ImageHostingDescription = '';
-                            this.postData.EmailAddress = '';
-                            this.Verification = '';
-                        } else {
-                            this.toast.error(data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        this.toast.error("发送错误!");
-                    });
-            }
+                .catch((error) => {
+                    console.error(error);
+                    return
+
+                });
+
 
         },
-
-        refreshCode() {
-            this.identifyCode = "";
-            this.makeCode(this.identifyCodes, 4);
+        sendVSorPK() {
+            const url = 'http://localhost:3199/Join-VSorPK';
+            const formData = JSON.stringify(this.postData);
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        this.refreshCaptcha();
+                        this.toast.success(data.message);
+                        this.postData.ImageHostingName = '';
+                        this.postData.ImageHostingLink = '';
+                        this.postData.TestImageURL = '';
+                        this.postData.ImageHostingDescription = '';
+                        this.postData.EmailAddress = '';
+                        this.Verification = '';
+                    } else {
+                        this.toast.error(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    this.toast.error("发送错误!");
+                });
         },
-        randomNum(min, max) {
-            max = max + 1
-            return Math.floor(Math.random() * (max - min) + min)
+        refreshCaptcha() {
+            // Fetch a new captcha image from the backend
+            fetch('http://localhost:3199/captcha', { credentials: 'include' })
+                .then((response) => response.text())
+                .then((data) => {
+                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
+                    this.Verification = ''; // Clear the user's previous input
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-        // 随机生成验证码字符串
-        makeCode(data, len) {
-            for (let i = 0; i < len; i++) {
-                this.identifyCode += data[this.randomNum(0, data.length - 1)]
-            }
-        }
-    }
+    },
+    mounted() {
+        this.refreshCaptcha();
+    },
 };
 </script>
 <style scoped>

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import Navbar from './components/Navbar.vue'
 import { createApp } from 'vue'
+
 import App from './App.vue'
 import router from './router'
 
@@ -12,11 +13,17 @@ import 'vue-toastification/dist/index.css'; // Import the CSS file
 import VueFullPage from 'vue-fullpage.js'
 import 'fullpage.js/dist/fullpage.min.css' // 引入fullpage.js的样式文件
 
+// import { DatePicker } from 'ant-design-vue';
+// import 'ant-design-vue/dist/reset.css';
 
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 const app = createApp(App)
 app.use(router)
 app.use(VueFullPage)
+// app.use(DatePicker);
+app.use(ElementPlus)
 app.use(Toast, {
     transition: "Vue-Toastification__bounce",
     maxToasts: 20,

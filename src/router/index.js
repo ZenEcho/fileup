@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/fileup.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/fileup.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,24 +7,61 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/imgtest',
       name: 'imgtest',
-      component: () => import('../views/ImgTest.vue')
+      component: () => import('../views/ImgTest.vue'),
     },
     {
       path: '/test',
       name: 'test',
-      component: () => import('../views/test.vue')
+      component: () => import('../views/test.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
-    }
-  ]
-})
+      component: () => import('../views/dashboard/Login.vue'),
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/dashboard/Register.vue'),
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/dashboard/dashboard.vue'),
+      meta: { requiresAuth: true }, // 设置需要登录验证
+    },
+  ],
+});
 
-export default router
+// 导航守卫
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('token'); // 假设你在登录成功后将token保存在LocalStorage
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (isAuthenticated) {
+      next();
+    } else {
+      // 用户未登录，重定向到登录页面
+      next('/login');
+    }
+  } else {
+    // 不需要登录验证的页面，放行
+    next();
+  }
+});
+
+// 添加自动跳转逻辑
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('token'); 
+  if (to.name === 'login' && isAuthenticated) {
+    next('/dashboard');
+  } else {
+    next();
+  }
+});
+
+export default router;

@@ -200,7 +200,6 @@ p {
 
 .main-section {
   background-image: linear-gradient(180deg, #0d6efd, #0dcaf0);
-  font-size: 1.5em;
   color: white;
   display: flex;
   flex-direction: column;
