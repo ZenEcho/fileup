@@ -1,243 +1,157 @@
 <template>
-    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="Password" prop="pass">
-            <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="Confirm" prop="checkPass">
-            <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="Age" prop="age">
-            <el-input v-model.number="ruleForm.age" />
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">Submit</el-button>
-            <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-        </el-form-item>
-    </el-form>
-</template>
-  
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
-
-const ruleFormRef = ref<FormInstance>()
-
-const checkAge = (rule: any, value: any, callback: any) => {
-    if (!value) {
-        return callback(new Error('Please input the age'))
-    }
-    setTimeout(() => {
-        if (!Number.isInteger(value)) {
-            callback(new Error('Please input digits'))
-        } else {
-            if (value < 18) {
-                callback(new Error('Age must be greater than 18'))
-            } else {
-                callback()
-            }
-        }
-    }, 1000)
-}
-
-const validatePass = (rule: any, value: any, callback: any) => {
-    if (value === '') {
-        callback(new Error('Please input the password'))
-    } else {
-        if (ruleForm.checkPass !== '') {
-            if (!ruleFormRef.value) return
-            ruleFormRef.value.validateField('checkPass', () => null)
-        }
-        callback()
-    }
-}
-const validatePass2 = (rule: any, value: any, callback: any) => {
-    if (value === '') {
-        callback(new Error('Please input the password again'))
-    } else if (value !== ruleForm.pass) {
-        callback(new Error("Two inputs don't match!"))
-    } else {
-        callback()
-    }
-}
-
-const ruleForm = reactive({
-    pass: '',
-    checkPass: '',
-    age: '',
-})
-
-const rules = reactive<FormRules<typeof ruleForm>>({
-    pass: [{ validator: validatePass, trigger: 'blur' }],
-    checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-    age: [{ validator: checkAge, trigger: 'blur' }],
-})
-
-const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.validate((valid) => {
-        if (valid) {
-            console.log('submit!')
-        } else {
-            console.log('error submit!')
-            return false
-        }
-    })
-}
-
-const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.resetFields()
-}
-</script>
-
-
-
-
-
-
-<!-- <template>
     <div class="login-container">
-        <h2>后台登录</h2>
-        <form @submit.prevent="Verification">
-            <label for="EmailAddress">邮箱:</label>
-            <input type="text" id="EmailAddress" v-model="loginInfo.EmailAddress" required>
-            <label for="password">密码:</label>
-            <input type="password" id="password" v-model="loginInfo.password" required>
-            <div>
-                <img :src="captchaImage" @click="refreshCaptcha" />
-                <input v-model="captcha" placeholder="Enter the Captcha" />
-            </div>
-            <button type="submit">登录</button>
-        </form>
+        <el-card class="login-card">
+            <h1 class="login-title">欢迎登录</h1>
+            <el-form ref="loginForm" :model="loginData" :rules="rules">
+                <el-form-item label="邮箱" prop="Email">
+                    <el-input v-model="loginData.Email"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="Password">
+                    <el-input v-model="loginData.Password" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="验证码" prop="Captcha">
+                    <el-input v-model="loginData.Captcha"></el-input>
+                    <img v-if="captchaImage" :src="captchaImage" class="captcha-image" @click="generateCaptcha" />
+                </el-form-item>
+                <el-form-item class="login-button">
+                    <el-button type="primary" @click="handleLogin">登录</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <span>没有账号?</span>
+                    <el-button type="info" @click="goToRegister" link>注册</el-button>
+                    <span>or</span>
+                    <el-button type="info" @click="recoverPassword" link>找回密码</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
     </div>
 </template>
   
 <script>
+import { ElCard, ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 import { useToast } from "vue-toastification";
 export default {
     setup() {
         const toast = useToast();
         return { toast }
     },
+    components: {
+        ElCard,
+        ElForm,
+        ElFormItem,
+        ElInput,
+        ElButton,
+    },
     data() {
         return {
-            loginInfo: {
-                EmailAddress: '',
-                password: '',
-                last_login_time: '',
+            loginData: {
+                Email: '',
+                Password: '',
+                Captcha: '',
+                Last_Login_Time: '',
             },
-            captcha: '',
+            rules: {
+                Email: [
+                    { required: true, message: '请输入邮箱', trigger: 'blur' },
+                    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' },
+                ],
+                Password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 6, message: '密码长度至少为 6 个字符', trigger: 'blur' },
+                ],
+                Captcha: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' },
+                    { pattern: /^.{4}$/, message: '验证码为 4 个字符', trigger: 'blur' },
+                ],
+            },
             captchaImage: '',
         };
     },
     methods: {
-        Verification() {
-            fetch('http://localhost:3199/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ Verification: this.captcha }),
-                credentials: 'include',
-            })
-                .then((response) => response.json())
-                .then((data) => {
-
-
-                    if (data.status) {
-                        this.login()
-                    } else {
-                        this.toast.error(data.message);
-                    }
-
+        handleLogin() {
+            this.$refs.loginForm.validate(valid => {
+                if (!valid) { return }
+                const loginApiUrl = 'http://localhost:3199/login';
+                this.loginData.Last_Login_Time = new Date()
+                fetch(loginApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(this.loginData),
+                    credentials: 'include',
                 })
-                .catch((error) => {
-                    // Handle login failure
-                    console.error(error);
-                });
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data);
+                        if (data.status) {
+                            this.toast.success(data.message);
+                            localStorage.setItem('token', data.token);
+                            this.$router.push('/dashboard');
+                        } else {
+                            this.toast.error(data.message);
+                        }
+
+                    })
+                    .catch((error) => {
+                        this.toast.error(error.message);
+                    });
+
+            });
         },
-        login() {
-            const loginApiUrl = 'http://localhost:3199/login';
-            this.loginInfo.last_login_time = new Date()
-            fetch(loginApiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.loginInfo),
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    if (data.status) {
-                        this.toast.success(data.message);
-                        localStorage.setItem('token', data.token);
-                        this.$router.push('/dashboard');
-                    } else {
-                        this.toast.error(data.message);
-                    }
-
-                })
-                .catch((error) => {
-                    this.toast.error(error.message);
-                });
+        goToRegister() {
+            this.$router.push('/register');
         },
-        refreshCaptcha() {
-            // Fetch a new captcha image from the backend
+        recoverPassword() {
+            return this.toast.error("暂时无法使用");
+        },
+        generateCaptcha() {
             fetch('http://localhost:3199/captcha', { credentials: 'include' })
-                .then((response) => response.text())
-                .then((data) => {
+                .then(response => response.text())
+                .then(data => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
-                    this.captcha = '';
+                    this.loginData.Captcha = ''; // 清空用户输入的验证码
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                 });
         },
     },
-    mounted() {
-        this.refreshCaptcha();
+    created() {
+        this.generateCaptcha();
     },
 };
 </script>
-   -->
-
-<!-- <style>
+  
+<style scoped>
 .login-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-h2 {
+.login-card {
+    width: 24em;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
 }
 
-label,
-input {
-    display: block;
-    margin-bottom: 10px;
+.login-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-input {
+.el-button--primary {
     width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-}
-
-button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
 }
 </style>
-   -->
