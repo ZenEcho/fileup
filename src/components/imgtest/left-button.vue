@@ -46,7 +46,8 @@
     <div class="modal fade" id="SLModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <form @submit.prevent="handleSubmit">
+                <el-form ref="postData" :model="postData" @submit.prevent="handleSubmit" class="image-hosting-form"
+                    :rules="rules">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">收录说明</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -61,73 +62,42 @@
                     </div>
                     <!-- Your form content will go here -->
                     <div class="mx-auto mb-3" style="width: 28em;">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ImageHostingName">图床名称</span>
-                            <input v-model="postData.ImageHostingName" type="text" class="form-control"
-                                aria-describedby="ImageHostingName" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ImageHostingLink">图床链接</span>
-                            <input v-model="postData.ImageHostingLink" type="text" class="form-control"
-                                aria-describedby="ImageHostingLink" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="TestImageURL">测试图URL</span>
-                            <input v-model="postData.TestImageURL" type="text" class="form-control"
-                                aria-describedby="TestImageURL" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="EmailAddress">联系邮箱</span>
-                            <input v-model="postData.EmailAddress" type="text" class="form-control"
-                                aria-describedby="EmailAddress" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ImageHostingDescription">图床描述(40字)</span>
-                            <input v-model="postData.ImageHostingDescription" type="text" class="form-control"
-                                aria-describedby="ImageHostingDescription" maxlength="40">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="ImageHostingRegion"
-                                    v-model="postData.ImageHostingRegion">
-                                <label class="form-check-label" for="ImageHostingRegion">
-                                    大陆服务器
-                                </label>
-                            </div>
-                            <div class="form-check" style="margin-left: 10px;">
-                                <input class="form-check-input" type="checkbox" id="ImageHostingCDN"
-                                    v-model="postData.ImageHostingCDN">
-                                <label class="form-check-label" for="ImageHostingCDN">
-                                    使用CDN
-                                </label>
-                            </div>
-                            <div class="form-check" style="margin-left: 10px;">
-                                <input class="form-check-input" type="checkbox" id="ImageHostingRegister"
-                                    v-model="postData.ImageHostingRegister">
-                                <label class="form-check-label" for="ImageHostingRegister">
-                                    免注册可用
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="input-group mb-3" :class="{ VerificationError: isVerificationError }">
-                            <span class="input-group-text" id="Verification">验证码</span>
-                            <input v-model="Verification" type="text" class="form-control" aria-describedby="Verification">
-                            <img :src="captchaImage" @click="refreshCaptcha" />
-                        </div>
+                        <el-form-item label="图床名称" prop="ImageHostingName">
+                            <el-input v-model="postData.ImageHostingName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="图床链接" prop="ImageHostingLink">
+                            <el-input v-model="postData.ImageHostingLink"></el-input>
+                        </el-form-item>
+                        <el-form-item label="测试图URL" prop="TestImageURL">
+                            <el-input v-model="postData.TestImageURL"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系邮箱" prop="Email">
+                            <el-input v-model="postData.Email"></el-input>
+                        </el-form-item>
+                        <el-form-item label="图床描述" prop="ImageHostingDescription">
+                            <el-input v-model="postData.ImageHostingDescription"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-checkbox v-model="postData.ImageHostingRegion">大陆服务器</el-checkbox>
+                            <el-checkbox v-model="postData.ImageHostingCDN">使用CDN</el-checkbox>
+                            <el-checkbox v-model="postData.ImageHostingRegister">免注册可用</el-checkbox>
+                        </el-form-item>
+                        <el-form-item label="验证码" prop="Captcha">
+                            <el-input v-model="postData.Captcha"></el-input>
+                            <img v-if="captchaImage" :src="captchaImage" class="captcha-image" @click="refreshCaptcha" />
+                        </el-form-item>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">申请</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">算了</button>
+                        <el-button type="primary" native-type="submit">申请</el-button>
+                        <el-button data-bs-dismiss="modal">算了</el-button>
                     </div>
-                </form>
+                </el-form>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import SIdentify from "@/components/SIdentify.vue";
 import { useToast } from "vue-toastification";
 export default {
     setup() {
@@ -149,15 +119,36 @@ export default {
                 ImageHostingName: '',
                 ImageHostingLink: '',
                 TestImageURL: '',
+                Email: '',
                 ImageHostingDescription: '',
-                EmailAddress: '',
                 ImageHostingRegion: false,
-                ImageHostingCDN: true,
-                ImageHostingRegister: true,
+                ImageHostingCDN: false,
+                ImageHostingRegister: false,
+                Captcha: "",
             },
             captchaImage: "", //验证码url
-            Verification: "", // 输入的验证码
-            isVerificationError: false,
+            rules: {
+                ImageHostingName: [
+                    { required: true, message: '请输入图床名称', trigger: 'blur' },
+                    { max: 12, message: '图床名称长度最多为 12 个字符', trigger: 'blur' },
+                ],
+                ImageHostingLink: [
+                    { required: true, message: '请输入图床链接', trigger: 'blur' },
+                ],
+                TestImageURL: [
+                    { required: true, message: '请输入测试图URL', trigger: 'blur' },
+                ],
+                Email: [
+                    { required: true, message: '请输入邮箱', trigger: 'blur' },
+                    { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' },
+                ],
+                ImageHostingDescription: [
+                    { mxa: 40, message: '图床描述长度最多为 40 个字符', trigger: 'blur' },
+                ],
+                Captcha: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' },
+                ],
+            },
         };
     },
     // created() { this.refreshCode() },
@@ -204,33 +195,30 @@ export default {
             this.filterType = type;
         },
         handleSubmit() {
-            fetch('http://localhost:3199/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ Verification: this.Verification }),
-                credentials: 'include',
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.status) {
-                        this.sendVSorPK()
-                    } else {
-                        //验证码错误
-                        this.isVerificationError = true;
-                        setTimeout(() => {
-                            this.isVerificationError = false;
-                        }, 800)
-                        this.toast.error(data.message);
-                    }
+            this.$refs.postData.validate(valid => {
+                if (!valid) { return }
+                fetch("http://localhost:3199/Join-VSorPK", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(this.postData),
+                    credentials: 'include',
                 })
-                .catch((error) => {
-                    console.error(error);
-                    return
-
-                });
-
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.status) {
+                            this.toast.success(data.message);
+                        } else {
+                            this.toast.error(data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        this.toast.error(error.message);
+                    });
+            })
 
         },
         sendVSorPK() {
@@ -269,7 +257,7 @@ export default {
                 .then((response) => response.text())
                 .then((data) => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
-                    this.Verification = ''; // Clear the user's previous input
+                    this.postData.Captcha = ''; // 清空用户输入的验证码
                 })
                 .catch((error) => {
                     console.error(error);
@@ -282,36 +270,6 @@ export default {
 };
 </script>
 <style scoped>
-.VerificationError {
-    animation: shake 1s;
-}
-
-@keyframes shake {
-
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    20%,
-    80% {
-        transform: translate3d(2px, 0, 0);
-    }
-
-    30%,
-    50%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
-
-
-}
-
 .ButtonActive {
     background-color: #03a9f4 !important;
     color: #fff;

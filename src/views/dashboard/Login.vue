@@ -28,19 +28,11 @@
 </template>
   
 <script>
-import { ElCard, ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 import { useToast } from "vue-toastification";
 export default {
     setup() {
         const toast = useToast();
         return { toast }
-    },
-    components: {
-        ElCard,
-        ElForm,
-        ElFormItem,
-        ElInput,
-        ElButton,
     },
     data() {
         return {
@@ -61,7 +53,6 @@ export default {
                 ],
                 Captcha: [
                     { required: true, message: '请输入验证码', trigger: 'blur' },
-                    { pattern: /^.{4}$/, message: '验证码为 4 个字符', trigger: 'blur' },
                 ],
             },
             captchaImage: '',

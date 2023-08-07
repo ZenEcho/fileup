@@ -70,7 +70,6 @@ export default {
                 ],
                 Captcha: [
                     { required: true, message: '请输入验证码', trigger: 'blur' },
-                    { pattern: /^.{4}$/, message: '验证码为 4 个字符', trigger: 'blur' },
                 ],
             },
             captchaImage: '',
