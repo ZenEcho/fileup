@@ -62,9 +62,8 @@ export default {
         handleLogin() {
             this.$refs.loginForm.validate(valid => {
                 if (!valid) { return }
-                const loginApiUrl = 'http://localhost:3199/login';
                 this.loginData.Last_Login_Time = new Date()
-                fetch(loginApiUrl, {
+                fetch(this.$apiConfig.ServerUrl + "/login", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -99,7 +98,7 @@ export default {
             return this.toast.error("暂时无法使用");
         },
         generateCaptcha() {
-            fetch('http://localhost:3199/captcha', { credentials: 'include' })
+            fetch(this.$apiConfig.ServerUrl +'/captcha', { credentials: 'include' })
                 .then(response => response.text())
                 .then(data => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);

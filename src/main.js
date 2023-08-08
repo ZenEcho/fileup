@@ -42,6 +42,11 @@ app.use(Toast, {
     rtl: false
 });
 
+// 全局配置
+app.config.globalProperties.$apiConfig = {
+    ServerUrl: 'http://localhost:3199',
+};
+
 app.mount('#box')
 
 app.component('Navbar', Navbar); // 全局注册 Navbar 组件

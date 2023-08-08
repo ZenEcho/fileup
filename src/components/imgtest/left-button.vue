@@ -197,7 +197,7 @@ export default {
         handleSubmit() {
             this.$refs.postData.validate(valid => {
                 if (!valid) { return }
-                fetch("http://localhost:3199/Join-VSorPK", {
+                fetch(this.$apiConfig.ServerUrl + "/Join-VSorPK", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -211,6 +211,14 @@ export default {
                     .then((data) => {
                         if (data.status) {
                             this.toast.success(data.message);
+                            this.refreshCaptcha();
+                            this.postData.ImageHostingName = '';
+                            this.postData.ImageHostingLink = '';
+                            this.postData.TestImageURL = '';
+                            this.postData.Email = '';
+                            this.postData.ImageHostingDescription = '';
+                            this.postData.EmailAddress = '';
+                            this.postData.Captcha = '';
                         } else {
                             this.toast.error(data.message);
                         }
@@ -221,39 +229,8 @@ export default {
             })
 
         },
-        sendVSorPK() {
-            const url = 'http://localhost:3199/Join-VSorPK';
-            const formData = JSON.stringify(this.postData);
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status) {
-                        this.refreshCaptcha();
-                        this.toast.success(data.message);
-                        this.postData.ImageHostingName = '';
-                        this.postData.ImageHostingLink = '';
-                        this.postData.TestImageURL = '';
-                        this.postData.ImageHostingDescription = '';
-                        this.postData.EmailAddress = '';
-                        this.Verification = '';
-                    } else {
-                        this.toast.error(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.toast.error("发送错误!");
-                });
-        },
         refreshCaptcha() {
-            // Fetch a new captcha image from the backend
-            fetch('http://localhost:3199/captcha', { credentials: 'include' })
+            fetch(this.$apiConfig.ServerUrl + '/captcha', { credentials: 'include' })
                 .then((response) => response.text())
                 .then((data) => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);

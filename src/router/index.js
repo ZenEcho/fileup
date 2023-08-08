@@ -35,6 +35,11 @@ const router = createRouter({
       component: () => import('../views/dashboard/dashboard.vue'),
       meta: { requiresAuth: true }, // 设置需要登录验证
     },
+    {
+      path: '/:catchAll(.*)',
+      name: '404',
+      component: () => import('../views/404.vue'),
+    }
   ],
 });
 
@@ -43,9 +48,30 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token'); // 假设你在登录成功后将token保存在LocalStorage
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (isAuthenticated) {
-      next();
+      // next();
+      fetch("http://localhost:3199/verify-token", {
+        method: 'GET',
+        headers: {
+          Authorization: isAuthenticated,
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status) {
+            next();
+          } else {
+            localStorage.removeItem('token');
+            next('/login');
+          }
+        })
+        .catch((error) => {
+          localStorage.removeItem('token');
+          next('/login');
+          console.error(error);
+        });
     } else {
-      // 用户未登录，重定向到登录页面
       next('/login');
     }
   } else {
@@ -56,7 +82,7 @@ router.beforeEach((to, from, next) => {
 
 // 添加自动跳转逻辑
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('token'); 
+  const isAuthenticated = localStorage.getItem('token');
   if (to.name === 'login' && isAuthenticated) {
     next('/dashboard');
   } else {
