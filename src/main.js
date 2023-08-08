@@ -18,12 +18,15 @@ import 'fullpage.js/dist/fullpage.min.css' // 引入fullpage.js的样式文件
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 const app = createApp(App)
 app.use(router)
 app.use(VueFullPage)
 // app.use(DatePicker);
 app.use(ElementPlus)
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+  }
 app.use(Toast, {
     transition: "Vue-Toastification__bounce",
     maxToasts: 20,

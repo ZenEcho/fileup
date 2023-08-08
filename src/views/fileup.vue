@@ -1,6 +1,3 @@
-<script setup>
-
-</script>
 <template>
   <section class="main-section"
     style="position: sticky; top: 0px; z-index: 10; background-color: #00BCD4; ">
