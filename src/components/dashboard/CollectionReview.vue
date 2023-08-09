@@ -7,10 +7,10 @@
             :prop="column.prop"></el-table-column>
         <el-table-column label="Actions">
             <template v-slot="{ row }">
-                <el-button size="small" type="success" @click="handleSuccess(row.id)"><el-icon>
+                <el-button size="small" type="success" @click="handleSuccess(row)"><el-icon>
                         <Check />
                     </el-icon></el-button>
-                <el-button size="small" type="danger" @click="handleDelete(row.id)"><el-icon>
+                <el-button size="small" type="danger" @click="handleDelete(row)"><el-icon>
                         <Close />
                     </el-icon></el-button>
             </template>
@@ -19,8 +19,12 @@
 </template>
   
 <script>
-import { ElLoading } from 'element-plus';
+import { useToast } from "vue-toastification";
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     data() {
         return {
             loading: false,
@@ -50,11 +54,67 @@ export default {
         headerRowClassName() {
             return 'header-row';
         },
-        handleDelete(id) {
-            console.log(`Deleting ID ${id}`);
+        handleDelete(row) {
+            const isAuthenticated = localStorage.getItem('token');
+            fetch("http://localhost:3199/api/Del_VSorPK", {
+                method: 'POST',
+                headers: {
+                    Authorization: isAuthenticated,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ID: row.ID }),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.status) {
+                        this.toast.success(data.message);
+                        this.data.splice(this.data.findIndex(item => item.ID === row.ID), 1)
+                    } else {
+                        this.toast.error(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-        handleSuccess(id) {
-            console.log(`Success for ID ${id}`);
+        handleSuccess(row) {
+            const isAuthenticated = localStorage.getItem('token');
+            const obj = {
+                ID: row.ID,
+                ImageHostingName: row.ImageHostingName,
+                ImageHostingLink: row.ImageHostingLink,
+                TestImageURL: row.TestImageURL,
+                ImageHostingDescription: row.ImageHostingDescription,
+                Email: row.Email,
+                ImageHostingRegion: row.ImageHostingRegion,
+                ImageHostingCDN: row.ImageHostingCDN,
+                ImageHostingRegister: row.ImageHostingRegister
+            }
+
+            fetch("http://localhost:3199/api/Add_VSorPK", {
+                method: 'POST',
+                headers: {
+                    Authorization: isAuthenticated,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(obj),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.status) {
+                        this.toast.success(data.message);
+                        row.ImageHostingApproved = 1
+                    } else {
+                        this.toast.error(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
         getDATA() {
             const isAuthenticated = localStorage.getItem('token');
@@ -68,8 +128,7 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(data);
-                    this.data=data.data
+                    this.data = data.data
                     this.dynamicColumns = this.generateDynamicColumns(this.data);
                 })
                 .catch((error) => {
@@ -93,7 +152,7 @@ export default {
     },
     created() {
         this.getDATA()
-        
+
     },
 };
 </script>

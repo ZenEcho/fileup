@@ -40,8 +40,9 @@
                                     <el-menu-item index="1-1" disabled>用户管理</el-menu-item>
                                 </el-menu-item-group>
                                 <el-menu-item-group title="运营">
+                                    <el-menu-item index="2-0">图床列表</el-menu-item>
                                     <el-menu-item index="2-1">收录审核</el-menu-item>
-                                    <el-menu-item index="2-2" disabled>收录修改</el-menu-item>
+                                    <el-menu-item index="2-2" >收录修改</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                         </el-menu>
@@ -49,12 +50,14 @@
                 </el-aside>
                 <el-container>
                     <el-main>
-                        <!-- 根据选中的菜单项，动态显示内容 -->
+                        <div v-if="selectedMenuItem === '2-0'">
+                            <ImageHostingList></ImageHostingList>
+                        </div>
                         <div v-if="selectedMenuItem === '2-1'">
-                            <Table></Table>
+                            <CollectionReview></CollectionReview>
                         </div>
                         <div v-if="selectedMenuItem === '2-2'">
-                            <!-- 显示其他内容 -->
+                            <el-empty description="description" />
                         </div>
                     </el-main>
                 </el-container>
@@ -64,11 +67,12 @@
 </template>
   
 <script>
-import Table from '@/components/dashboard/table.vue'
+import CollectionReview from '@/components/dashboard/CollectionReview.vue'
+import ImageHostingList from '@/components/dashboard/ImageHostingList.vue'
 import { useToast } from "vue-toastification";
 export default {
     components: {
-        Table,
+        CollectionReview, ImageHostingList
     },
     setup() {
         const toast = useToast();
