@@ -63,7 +63,7 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (!valid) { return }
                 this.loginData.Last_Login_Time = new Date()
-                fetch(this.$apiConfig.ServerUrl + "/login", {
+                fetch(this.$apiConfig.ServerUrl + "/api/login", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

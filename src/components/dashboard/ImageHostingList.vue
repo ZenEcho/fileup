@@ -1,140 +1,64 @@
 <template>
-    <el-table v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
-        element-loading-background="rgba(122, 122, 122, 0.8)" :data="data" row-key="id" :row-class-name="rowClassName"
-        :header-row-class-name="headerRowClassName" :default-sort="{ prop: 'id', order: 'ascending' }" fixed
-        style="min-width: 700px;">
-        <el-table-column v-for="column in dynamicColumns" :key="column.prop" :label="column.label"
-            :prop="column.prop">
-        </el-table-column>
-        <el-table-column label="Actions">
-            <template v-slot="{ row }">
-                <template v-if="editingRow === data.indexOf(row)">
-                    <el-button size="small" type="success" @click="handleSave(editingRow)">Save</el-button>
-                    <el-button size="small" type="info" @click="handleCancel">Cancel</el-button>
+    <div>
+        <el-table stripe :data="visibleData" style="width: 100%" v-loading="loading" element-loading-text="Loading..."
+            @selection-change="handleSelectionChange">
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column v-for="column in tableColumns" :key="column.prop" :label="column.label" :prop="column.prop">
+                <template #default="scope">
+                    <template v-if="!scope.row.editing">{{ scope.row[column.prop] }}</template>
+                    <template v-else>
+                        <el-input v-model="scope.row[column.prop]" size="small"></el-input>
+                    </template>
                 </template>
-                <template v-else>
-                    <el-button size="small" type="primary" @click="handleEdit(row)">Edit</el-button>
-                    <el-button size="small" type="danger" @click="handleDelete(row)">Delete</el-button>
+            </el-table-column>
+            <el-table-column label="操作" width="140px" fixed="right">
+                <template #default="scope">
+                    <template v-if="!scope.row.editing">
+                        <el-button @click="startEditing(scope.$index)"  size="small">编辑</el-button>
+                        <el-button @click="startDelete(scope.$index)" link type="danger">删除</el-button>
+                    </template>
+                    <template v-else>
+                        <el-button @click="saveEdit(scope.$index)" size="small">保存</el-button>
+                        <el-button @click="cancelEdit(scope.$index)" size="small">取消</el-button>
+                    </template>
                 </template>
-            </template>
-        </el-table-column>
-
-    </el-table>
+            </el-table-column>
+        </el-table>
+    </div>
 </template>
   
 <script>
-import { useToast } from "vue-toastification";
 export default {
-    setup() {
-        const toast = useToast();
-        return { toast }
-    },
     data() {
         return {
             loading: false,
-            dynamicColumns: [], // 动态列配置数组
-            data: [
-                {
-                    "ID": 1,
-                    "图床名称": 'John Doe',
-                    "图床链接": "baidu.com",
-                    "测试图链接": "baidu.com",
-                    "图床描述": "",
-                    "联系邮箱": "qq@baidu.com",
-                    "图床区域": "0",
-                    "CDN": 1,
-                    "允许注册": 0,
-                    "审核状态": 0,
-                    "注册IP": "192.168.0.1",
-                    "注册时间": "2023",
-                },
-            ],
-            editingRow: null // 用于跟踪正在编辑的行的索引
+            rawData: [], // 原始数据
+            visibleData: [], // 当前可见数据
+            selectedRows: [], // 选择的行
+            tableColumns: [], // 动态生成的表格列
         };
     },
     methods: {
-        handleEdit(row) {
-            this.editingRow = this.data.indexOf(row);
+        startEditing(index) {
+            this.visibleData[index].editing = true;
         },
-        handleSave(index) {
-            // 提交编辑后的数据至服务器
-            // 然后设置 editingRow 为 null
-            this.editingRow = null;
-        },
-        handleCancel() {
-            this.editingRow = null;
-        },
-        rowClassName({ rowIndex }) {
-            return rowIndex % 2 === 0 ? 'even-row' : 'odd-row';
-        },
-        headerRowClassName() {
-            return 'header-row';
-        },
-        handleDelete(row) {
-            const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/api/Del_VSorPK", {
-                method: 'POST',
-                headers: {
-                    Authorization: isAuthenticated,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ID: row.ID }),
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.status) {
-                        this.toast.success(data.message);
-                        this.data.splice(this.data.findIndex(item => item.ID === row.ID), 1)
-                    } else {
-                        this.toast.error(data.message);
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        },
-        handleSuccess(row) {
-            const isAuthenticated = localStorage.getItem('token');
-            const obj = {
-                ID: row.ID,
-                ImageHostingName: row.ImageHostingName,
-                ImageHostingLink: row.ImageHostingLink,
-                TestImageURL: row.TestImageURL,
-                ImageHostingDescription: row.ImageHostingDescription,
-                Email: row.Email,
-                ImageHostingRegion: row.ImageHostingRegion,
-                ImageHostingCDN: row.ImageHostingCDN,
-                ImageHostingRegister: row.ImageHostingRegister
-            }
+        saveEdit(index) {
+            const editedRow = this.visibleData[index];
+            console.log("保存编辑后的数据", editedRow);
 
-            fetch("http://localhost:3199/api/Add_VSorPK", {
-                method: 'POST',
-                headers: {
-                    Authorization: isAuthenticated,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(obj),
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.status) {
-                        this.toast.success(data.message);
-                        row.ImageHostingApproved = 1
-                    } else {
-                        this.toast.error(data.message);
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            editedRow.editing = false;
         },
-        getDATA() {
+        cancelEdit(index) {
+            // 取消编辑
+            this.visibleData[index].editing = false;
+        },
+        handleSelectionChange(selection) {
+            this.selectedRows = selection;
+        },
+        loadData() {
+            this.loading = true;
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/api/Join-VSorPK", {
+            fetch("http://localhost:3199/api/ImagesHosting_list", {
                 method: 'POST',
                 headers: {
                     Authorization: isAuthenticated,
@@ -144,47 +68,33 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    this.data = data.data
-                    this.dynamicColumns = this.generateDynamicColumns(this.data);
+                    this.rawData = data.data;
+
+                    const id20Row = this.rawData.find(row => row.ID === 20);
+                    if (id20Row) {
+                        id20Row.warning = true;
+                    }
+
+                    this.tableColumns = Object.keys(this.rawData[0]).map(key => ({
+                        prop: key,
+                        label: key,
+                    }));
+                    this.visibleData = this.rawData.slice(0, 20);
+                    this.loading = false;
                 })
                 .catch((error) => {
                     console.error(error);
                 });
-        },
-        showLoading() {
-            this.loading = true
-        },
-        hideLoading() {
-            this.loading = false
-        },
-        generateDynamicColumns(data) {
-            return Object.keys(data[0]).map((field) => {
-                return {
-                    prop: field,
-                    label: field,
-                };
-            });
         },
     },
-    created() {
-        this.getDATA()
-
+    mounted() {
+        this.loadData();
     },
 };
 </script>
-  
 <style scoped>
-.even-row {
-    background-color: #f5f5f5;
-}
-
-.odd-row {
-    background-color: #ffffff;
-}
-
-.header-row {
-    background-color: #e0e0e0;
-    font-weight: bold;
+.warning-row {
+    background-color: yellow;
+    /* 设置警告行的背景色为黄色 */
 }
 </style>
-  

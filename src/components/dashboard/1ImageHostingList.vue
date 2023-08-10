@@ -1,21 +1,21 @@
 <template>
-    <el-table stripe v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
-        element-loading-background="rgba(122, 122, 122, 0.8)" :data="data" row-key="id" :row-class-name="rowClassName"
-        :header-row-class-name="headerRowClassName" :default-sort="{ prop: 'id', order: 'ascending' }" fixed
-        style="min-width: 700px;">
-        <el-table-column v-for="column in dynamicColumns" :key="column.prop" :label="column.label"
-            :prop="column.prop"></el-table-column>
-        <el-table-column label="操作" width="140px" fixed="right">
-            <template v-slot="{ row }">
-                <el-button size="small" type="success" @click="handleSuccess(row)">
-                    通过
-                </el-button>
-                <el-button size="small" type="danger" @click="handleDelete(row)">
-                    删除
-                </el-button>
-            </template>
-        </el-table-column>
-    </el-table>
+    <el-scrollbar v-if="tableData.length > 0">
+        <div style="width: 100%; height: 500px">
+            <el-auto-resizer>
+                <template #default="{ height, width }">
+                    <el-table-v2 :columns="columns" :data="tableData" :width="width" :height="height"
+                        :row-class="tableRowClassName" fixed />
+                </template>
+            </el-auto-resizer>
+        </div>
+        <div style="margin-top: 10px" v-if="tableData.length > 0">
+            共
+            <el-link type="primary" style="font-size: 20px">{{
+                tableData.length
+            }}</el-link>
+            条数据
+        </div>
+    </el-scrollbar>
 </template>
   
 <script>
@@ -45,9 +45,20 @@ export default {
                     "注册时间": "2023",
                 },
             ],
+            editingRow: null // 用于跟踪正在编辑的行的索引
         };
     },
     methods: {
+        handleEdit(row) {
+            this.editingRow = this.data.indexOf(row);
+            console.log(this.editingRow)
+        },
+        handleSave(index) {
+            this.editingRow = null;
+        },
+        handleCancel() {
+            this.editingRow = null;
+        },
         rowClassName({ rowIndex }) {
             return rowIndex % 2 === 0 ? 'even-row' : 'odd-row';
         },
@@ -156,19 +167,3 @@ export default {
     },
 };
 </script>
-  
-<style scoped>
-.even-row {
-    background-color: #f5f5f5;
-}
-
-.odd-row {
-    background-color: #ffffff;
-}
-
-.header-row {
-    background-color: #e0e0e0;
-    font-weight: bold;
-}
-</style>
-  
