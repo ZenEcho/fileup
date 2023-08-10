@@ -14,7 +14,7 @@
             <el-table-column label="操作" width="140px" fixed="right">
                 <template #default="scope">
                     <template v-if="!scope.row.editing">
-                        <el-button @click="startEditing(scope.$index)"  size="small">编辑</el-button>
+                        <el-button @click="startEditing(scope.$index)" size="small">编辑</el-button>
                         <el-button @click="startDelete(scope.$index)" link type="danger">删除</el-button>
                     </template>
                     <template v-else>
@@ -58,29 +58,33 @@ export default {
         loadData() {
             this.loading = true;
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/api/ImagesHosting_list", {
+            fetch("http://localhost:3199/images_hosting/ImagesHosting_list", {
                 method: 'POST',
                 headers: {
                     Authorization: isAuthenticated,
+                    'Content-Type': 'application/json',
                 },
             })
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
+                    console.log(data);
                     this.rawData = data.data;
-
+                    this.loading = false;
+                    if (data.data.length === 0) {
+                        return;
+                    }
                     const id20Row = this.rawData.find(row => row.ID === 20);
                     if (id20Row) {
                         id20Row.warning = true;
                     }
-
                     this.tableColumns = Object.keys(this.rawData[0]).map(key => ({
                         prop: key,
                         label: key,
                     }));
                     this.visibleData = this.rawData.slice(0, 20);
-                    this.loading = false;
+
                 })
                 .catch((error) => {
                     console.error(error);

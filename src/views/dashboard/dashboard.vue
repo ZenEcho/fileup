@@ -89,37 +89,6 @@ export default {
         }
     },
     methods: {
-        // verifyToken() {
-        //     const token = localStorage.getItem('token');
-        //     fetch(this.$apiConfig.ServerUrl + "/verify-token", {
-        //         method: 'GET',
-        //         headers: {
-        //             Authorization: token,
-        //         },
-        //     })
-        //         .then((response) => {
-        //             if (!response.ok) {
-        //                 localStorage.token = ""
-        //                 this.$router.push('/login');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then((data) => {
-        //             console.log();
-        //             if (data.status) {
-        //                 this.toast.success(data.message);
-        //             } else {
-        //                 this.toast.error(data.message);
-        //             }
-
-        //         })
-        //         .catch((error) => {
-        //             this.toast.error(error.message);
-        //             this.$router.push('/login')
-        //             localStorage.token = ""
-        //             console.error(error);
-        //         });
-        // },
         Exitlogin() {
             localStorage.removeItem('token');
             this.$router.push('/login')

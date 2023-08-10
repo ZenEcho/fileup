@@ -56,7 +56,7 @@ export default {
         },
         handleDelete(row) {
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/api/Del_VSorPK", {
+            fetch("http://localhost:3199/inclusion/remove_inclusion", {
                 method: 'POST',
                 headers: {
                     Authorization: isAuthenticated,
@@ -93,7 +93,7 @@ export default {
                 ImageHostingRegister: row.ImageHostingRegister
             }
 
-            fetch("http://localhost:3199/api/Add_VSorPK", {
+            fetch("http://localhost:3199/inclusion/through_inclusion", {
                 method: 'POST',
                 headers: {
                     Authorization: isAuthenticated,
@@ -118,7 +118,7 @@ export default {
         },
         getDATA() {
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/api/Join-VSorPK", {
+            fetch("http://localhost:3199/inclusion/website_inclusion_search", {
                 method: 'POST',
                 headers: {
                     Authorization: isAuthenticated,
@@ -129,6 +129,9 @@ export default {
                 })
                 .then((data) => {
                     this.data = data.data
+                    if (data.data.length === 0) {
+                        return;
+                    }
                     this.dynamicColumns = this.generateDynamicColumns(this.data);
                 })
                 .catch((error) => {

@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (isAuthenticated) {
       // next();
-      fetch("http://localhost:3199/verify-token", {
+      fetch("http://localhost:3199/auth/verify-token", {
         method: 'GET',
         headers: {
           Authorization: isAuthenticated,

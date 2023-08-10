@@ -80,7 +80,7 @@ export default {
             this.RegisterData.Registration_Time = new Date()
             this.$refs.RegisterForm.validate(valid => {
                 if (!valid) { return }
-                fetch(this.$apiConfig.ServerUrl + "/register", {
+                fetch(this.$apiConfig.ServerUrl + "/auth/register", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default {
             return this.toast.error("暂时无法使用");
         },
         generateCaptcha() {
-            fetch(this.$apiConfig.ServerUrl + '/captcha', { credentials: 'include' })
+            fetch(this.$apiConfig.ServerUrl + '/auth/captcha', { credentials: 'include' })
                 .then(response => response.text())
                 .then(data => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
