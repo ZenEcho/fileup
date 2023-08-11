@@ -29,6 +29,7 @@
   
 <script>
 import { useToast } from "vue-toastification";
+import http from '@/http';
 export default {
     setup() {
         const toast = useToast();
@@ -63,32 +64,21 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (!valid) { return }
                 this.loginData.Last_Login_Time = new Date()
-                fetch(this.$apiConfig.ServerUrl + "/auth/login", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(this.loginData),
-                    credentials: 'include',
+                http.post('/auth/login', this.loginData, {
                 })
                     .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
-                        console.log(data);
+                        const data = response.data;
                         if (data.status) {
                             this.toast.success(data.message);
-                            localStorage.setItem('token', data.token);
                             this.$router.push('/dashboard');
                         } else {
                             this.toast.error(data.message);
                         }
-
                     })
                     .catch((error) => {
-                        this.toast.error(error.message);
+                        console.log(error);
+                        this.toast.error(error.data.message);
                     });
-
             });
         },
         goToRegister() {
@@ -98,11 +88,13 @@ export default {
             return this.toast.error("暂时无法使用");
         },
         generateCaptcha() {
-            fetch(this.$apiConfig.ServerUrl +'/auth/captcha', { credentials: 'include' })
-                .then(response => response.text())
-                .then(data => {
-                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
-                    this.loginData.Captcha = ''; // 清空用户输入的验证码
+            http.get('/auth/captcha', {
+                credentials: 'include',
+                responseType: 'text', // 指定响应的数据类型为文本
+            })
+                .then(response => {
+                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(response.data);
+                    this.loginData.Captcha = ''; 
                 })
                 .catch(error => {
                     console.error(error);

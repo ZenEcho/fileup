@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/fileup.vue';
-
+import http from '@/http';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -48,29 +48,28 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token'); // 假设你在登录成功后将token保存在LocalStorage
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (isAuthenticated) {
-      // next();
-      fetch("http://localhost:3199/auth/verify-token", {
-        method: 'GET',
+
+      http.get('/auth/verify-token', {
         headers: {
           Authorization: isAuthenticated,
         },
       })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status) {
+        .then(response => {
+
+          if (response.data.status) {
             next();
           } else {
             localStorage.removeItem('token');
             next('/login');
           }
         })
-        .catch((error) => {
+        .catch(error => {
           localStorage.removeItem('token');
           next('/login');
           console.error(error);
         });
+
+
     } else {
       next('/login');
     }

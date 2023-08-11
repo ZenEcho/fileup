@@ -33,6 +33,7 @@
 <script>
 import { ElCard, ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 import { useToast } from "vue-toastification";
+import http from '@/http';
 export default {
     setup() {
         const toast = useToast();
@@ -80,18 +81,11 @@ export default {
             this.RegisterData.Registration_Time = new Date()
             this.$refs.RegisterForm.validate(valid => {
                 if (!valid) { return }
-                fetch(this.$apiConfig.ServerUrl + "/auth/register", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(this.RegisterData),
-                    credentials: 'include',
+                http.post('/auth/register', this.RegisterData, {
                 })
+
                     .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
+                        const data = response.data;
                         if (data.status) {
                             this.toast.success(data.message);
                             setTimeout(() => {
@@ -102,7 +96,7 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        this.toast.error(error.message);
+                        this.toast.error(error.data.message);
                     });
             });
         },
@@ -113,19 +107,23 @@ export default {
             return this.toast.error("暂时无法使用");
         },
         generateCaptcha() {
-            fetch(this.$apiConfig.ServerUrl + '/auth/captcha', { credentials: 'include' })
-                .then(response => response.text())
-                .then(data => {
-                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
-                    this.RegisterData.captcha = ''; // 清空用户输入的验证码
+
+            http.get('/auth/captcha', {
+                credentials: 'include',
+                responseType: 'text', // 指定响应的数据类型为文本
+            })
+                .then(response => {
+                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(response.data);
+                    this.RegisterData.captcha = '';
                 })
                 .catch(error => {
                     console.error(error);
                 });
+
         },
     },
     created() {
-        // this.generateCaptcha();
+        this.generateCaptcha();
     },
 };
 </script>

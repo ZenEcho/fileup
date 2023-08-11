@@ -42,7 +42,7 @@
                                 <el-menu-item-group title="运营">
                                     <el-menu-item index="2-0">图床列表</el-menu-item>
                                     <el-menu-item index="2-1">收录审核</el-menu-item>
-                                    <el-menu-item index="2-2" >收录修改</el-menu-item>
+                                    <el-menu-item index="2-2">收录修改</el-menu-item>
                                 </el-menu-item-group>
                             </el-sub-menu>
                         </el-menu>
@@ -81,7 +81,6 @@ export default {
         };
     },
     created() {
-        // this.verifyToken();
     },
     data() {
         return {

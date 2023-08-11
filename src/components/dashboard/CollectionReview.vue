@@ -1,5 +1,5 @@
 <template>
-    <el-table stripe v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
+    <el-table stripe v-loading="loading" element-loading-text="Loading..."
         element-loading-background="rgba(122, 122, 122, 0.8)" :data="data" row-key="id" :row-class-name="rowClassName"
         :header-row-class-name="headerRowClassName" :default-sort="{ prop: 'id', order: 'ascending' }" fixed
         style="min-width: 700px;">
@@ -20,6 +20,7 @@
   
 <script>
 import { useToast } from "vue-toastification";
+import http from '@/http';
 export default {
     setup() {
         const toast = useToast();
@@ -28,7 +29,7 @@ export default {
     data() {
         return {
             loading: false,
-            dynamicColumns: [], // 动态列配置数组
+            dynamicColumns: [{ ID: 1, Name: 'Item 1', Price: 10 }], // 动态列配置数组
             data: [
                 {
                     "ID": 1,
@@ -118,23 +119,23 @@ export default {
         },
         getDATA() {
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/inclusion/website_inclusion_search", {
-                method: 'POST',
+            http.post('/inclusion/website_inclusion_search', {}, {
                 headers: {
                     Authorization: isAuthenticated,
                 },
             })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    this.data = data.data
+                .then(response => {
+                    const data = response.data;
+                    this.data = data.data;
                     if (data.data.length === 0) {
                         return;
                     }
+                    if (data.token) {
+                        localStorage.setItem('token', data.token);
+                    }
                     this.dynamicColumns = this.generateDynamicColumns(this.data);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                 });
         },
