@@ -94,26 +94,22 @@ export default {
                 ImageHostingRegister: row.ImageHostingRegister
             }
 
-            fetch("http://localhost:3199/inclusion/through_inclusion", {
-                method: 'POST',
+            http.post('/inclusion/through_inclusion', obj, {
                 headers: {
                     Authorization: isAuthenticated,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(obj),
             })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
+                .then(response => {
+                    const data = response.data;
                     if (data.status) {
                         this.toast.success(data.message);
-                        row.ImageHostingApproved = 1
+                        row.ImageHostingApproved = 1;
                     } else {
                         this.toast.error(data.message);
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                 });
         },

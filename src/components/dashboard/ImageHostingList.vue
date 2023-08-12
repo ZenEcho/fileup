@@ -17,7 +17,7 @@
                 <template #default="scope">
                     <template v-if="!scope.row.editing">
                         <el-button @click="startEditing(scope.$index)" size="small">编辑</el-button>
-                        <el-button @click="startDelete(scope.$index)" link type="danger">删除</el-button>
+                        <el-button @click="startDelete(scope.row.ID)" link type="danger">删除</el-button>
                     </template>
                     <template v-else>
                         <el-button @click="saveEdit(scope.$index)" size="small">保存</el-button>
@@ -30,8 +30,13 @@
 </template>
   
 <script>
+import { useToast } from "vue-toastification";
 import http from '@/http';
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     data() {
         return {
             loading: false,
@@ -39,17 +44,59 @@ export default {
             visibleData: [], // 当前可见数据
             selectedRows: [], // 选择的行
             tableColumns: [], // 动态生成的表格列
+            originalRow: null,
+
         };
     },
     methods: {
         startEditing(index) {
             this.visibleData[index].editing = true;
+            this.originalRow = { ...this.visibleData[index] }; //复制数据对比
+        },
+        startDelete(row) {
+            const isAuthenticated = localStorage.getItem('token');
+            console.log(row);
+
+            http.post('/images_hosting/ImagesHosting_remove', { ID: row }, {
+                headers: {
+                    Authorization: isAuthenticated,
+                },
+            })
+                .then(response => {
+                    const data = response.data;
+                    if (data.status) {
+                        this.toast.success(data.message);
+                        this.visibleData.splice(this.visibleData.findIndex(item => item.ID === row), 1)
+                    } else {
+                        this.toast.error(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         },
         saveEdit(index) {
             const editedRow = this.visibleData[index];
-            console.log("保存编辑后的数据", editedRow);
+            if (JSON.stringify(editedRow) != JSON.stringify(this.originalRow)) {
+                const isAuthenticated = localStorage.getItem('token');
+                http.post('/images_hosting/ImagesHosting_edit', {}, {
+                    headers: {
+                        Authorization: isAuthenticated,
+                    },
+                })
+                    .then(response => {
+                        const data = response.data;
+                        console.log(data);
+                        this.toast.success(data.message);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
 
             editedRow.editing = false;
+
+
         },
         cancelEdit(index) {
             // 取消编辑
@@ -79,12 +126,17 @@ export default {
                         prop: key,
                         label: key,
                     }));
-                    this.visibleData = this.rawData.slice(0, 20);
+
+                    // this.visibleData = this.visibleData = JSON.parse(JSON.stringify(this.rawData));
+                    this.visibleData = this.rawData
+
+
                 })
                 .catch(error => {
                     console.error(error);
                 });
         },
+
     },
     mounted() {
         this.loadData();
