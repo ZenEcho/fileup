@@ -20,7 +20,7 @@
                         <el-button @click="startDelete(scope.row.ID)" link type="danger">删除</el-button>
                     </template>
                     <template v-else>
-                        <el-button @click="saveEdit(scope.$index)" size="small">保存</el-button>
+                        <el-button @click="saveEdit(scope.$index, scope.row)" size="small">保存</el-button>
                         <el-button @click="cancelEdit(scope.$index)" size="small">取消</el-button>
                     </template>
                 </template>
@@ -75,11 +75,14 @@ export default {
                     console.error(error);
                 });
         },
-        saveEdit(index) {
+        saveEdit(index, row) {
             const editedRow = this.visibleData[index];
+
+            console.log(index);
+
             if (JSON.stringify(editedRow) != JSON.stringify(this.originalRow)) {
                 const isAuthenticated = localStorage.getItem('token');
-                http.post('/images_hosting/ImagesHosting_edit', {}, {
+                http.post('/images_hosting/ImagesHosting_edit', row, {
                     headers: {
                         Authorization: isAuthenticated,
                     },
@@ -90,7 +93,7 @@ export default {
                         this.toast.success(data.message);
                     })
                     .catch(error => {
-                        console.error(error);
+                        return this.toast.error(error.data.message);
                     });
             }
 
@@ -115,7 +118,6 @@ export default {
             })
                 .then(response => {
                     const data = response.data;
-                    console.log(data);
                     this.rawData = data.data;
                     this.loading = false;
                     if (data.data.length === 0) {
@@ -133,7 +135,7 @@ export default {
 
                 })
                 .catch(error => {
-                    console.error(error);
+                    // console.error(error);
                 });
         },
 
