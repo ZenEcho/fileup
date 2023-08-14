@@ -99,6 +99,7 @@
 
 <script>
 import { useToast } from "vue-toastification";
+import http from '@/http';
 export default {
     setup() {
         const toast = useToast();
@@ -197,18 +198,11 @@ export default {
         handleSubmit() {
             this.$refs.postData.validate(valid => {
                 if (!valid) { return }
-                fetch(this.$apiConfig.ServerUrl + "/Join-VSorPK", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(this.postData),
-                    credentials: 'include',
+                http.post('/inclusion/website_inclusion', this.postData, {
                 })
+
                     .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
+                        const data = response.data;
                         if (data.status) {
                             this.toast.success(data.message);
                             this.refreshCaptcha();
@@ -224,19 +218,24 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        this.toast.error(error.message);
+                        this.toast.error(error.data.message);
                     });
+
             })
 
         },
         refreshCaptcha() {
-            fetch(this.$apiConfig.ServerUrl + '/captcha', { credentials: 'include' })
-                .then((response) => response.text())
-                .then((data) => {
-                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(data);
+
+
+            http.get('/auth/captcha', {
+                credentials: 'include',
+                responseType: 'text', // 指定响应的数据类型为文本
+            })
+                .then(response => {
+                    this.captchaImage = 'data:image/svg+xml;base64,' + btoa(response.data);
                     this.postData.Captcha = ''; // 清空用户输入的验证码
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                 });
         },

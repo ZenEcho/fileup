@@ -115,7 +115,7 @@ export default {
         },
         getDATA() {
             const isAuthenticated = localStorage.getItem('token');
-            http.post('/inclusion/website_inclusion_search', {}, {
+            http.post('/inclusion/website_inclusion_search', {pageSize:50}, {
                 headers: {
                     Authorization: isAuthenticated,
                 },

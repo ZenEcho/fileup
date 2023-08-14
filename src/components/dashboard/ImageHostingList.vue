@@ -6,9 +6,17 @@
 
             <el-table-column v-for="column in tableColumns" :key="column.prop" :label="column.label" :prop="column.prop">
                 <template #default="scope">
-                    <template v-if="!scope.row.editing">{{ scope.row[column.prop] }}</template>
+                    <!-- 判断列属性是否为 'ID' -->
+                    <template v-if="!scope.row.editing && column.prop !== 'ID'">
+                        {{ scope.row[column.prop] }}
+                    </template>
                     <template v-else>
-                        <el-input v-model="scope.row[column.prop]" size="small"></el-input>
+                        <!-- 在 'ID' 字段下显示文本 -->
+                        <span v-if="column.prop === 'ID'">
+                            {{ scope.row[column.prop] }}
+                        </span>
+                        <!-- 在编辑模式下，对于其他字段使用输入框 -->
+                        <el-input v-else v-model="scope.row[column.prop]" size="small"></el-input>
                     </template>
                 </template>
             </el-table-column>
