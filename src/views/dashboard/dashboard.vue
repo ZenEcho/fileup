@@ -8,7 +8,9 @@
                     <div class="flex-grow" />
                     <el-menu-item index="1">图床对比</el-menu-item>
                     <el-sub-menu index="2">
-                        <template #title>管理员</template>
+                        <template #title>
+                            {{ userInfo.username }}
+                        </template>
                         <el-menu-item index="2-1" @click="Exitlogin">退出</el-menu-item>
                     </el-sub-menu>
                 </el-menu>
@@ -71,6 +73,7 @@ import CollectionReview from '@/components/dashboard/CollectionReview.vue'
 import ImageHostingList from '@/components/dashboard/ImageHostingList.vue'
 import { useToast } from "vue-toastification";
 export default {
+
     components: {
         CollectionReview, ImageHostingList
     },
@@ -80,16 +83,25 @@ export default {
             toast,
         };
     },
-    created() {
-    },
+
     data() {
         return {
             selectedMenuItem: '2-1',
+            userInfo: {}
         }
+    },
+    mounted() {
+        // 在组件挂载后，从 localStorage 中读取 userInfo 数据
+        const storedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+        if (storedUserInfo) {
+            this.userInfo = storedUserInfo; // 将数据存储到 userInfo 属性中
+        }
+
     },
     methods: {
         Exitlogin() {
-            localStorage.removeItem('token');
+            localStorage.clear();
             this.$router.push('/login')
         },
         handleMenuSelect(index) {

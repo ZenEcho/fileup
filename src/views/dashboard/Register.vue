@@ -1,6 +1,5 @@
 <template>
-    <div class="Register-container">
-        <el-card class="Register-card">
+    <el-card class="Register-card">
             <h1 class="Register-title">注册</h1>
             <el-form ref="RegisterForm" :model="RegisterData" :rules="rules">
                 <el-form-item label="邮箱" prop="Email">
@@ -27,7 +26,6 @@
                 </el-form-item>
             </el-form>
         </el-card>
-    </div>
 </template>
   
 <script>
@@ -129,30 +127,13 @@ export default {
 </script>
   
 <style scoped>
-.Register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.Register-card {
-    width: 24em;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .Register-title {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
 }
 
-.Register-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
+
 
 .el-button--primary {
     width: 100%;

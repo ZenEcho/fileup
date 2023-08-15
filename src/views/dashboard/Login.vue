@@ -1,6 +1,5 @@
 <template>
-    <div class="login-container">
-        <el-card class="login-card">
+    <el-card class="login-card">
             <h1 class="login-title">欢迎登录</h1>
             <el-form ref="loginForm" :model="loginData" :rules="rules">
                 <el-form-item label="邮箱" prop="Email">
@@ -16,15 +15,8 @@
                 <el-form-item class="login-button">
                     <el-button type="primary" @click="handleLogin">登录</el-button>
                 </el-form-item>
-                <el-form-item>
-                    <span>没有账号?</span>
-                    <el-button type="info" @click="goToRegister" link>注册</el-button>
-                    <span>or</span>
-                    <el-button type="info" @click="recoverPassword" link>找回密码</el-button>
-                </el-form-item>
             </el-form>
         </el-card>
-    </div>
 </template>
   
 <script>
@@ -71,6 +63,7 @@ export default {
                         if (data.status) {
                             this.toast.success(data.message);
                             this.$router.push('/dashboard');
+                            localStorage.userInfo = JSON.stringify(data.userInfo)
                         } else {
                             this.toast.error(data.message);
                         }
@@ -94,7 +87,7 @@ export default {
             })
                 .then(response => {
                     this.captchaImage = 'data:image/svg+xml;base64,' + btoa(response.data);
-                    this.loginData.Captcha = ''; 
+                    this.loginData.Captcha = '';
                 })
                 .catch(error => {
                     console.error(error);
@@ -108,29 +101,10 @@ export default {
 </script>
   
 <style scoped>
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.login-card {
-    width: 24em;
-    padding: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .login-title {
-    font-size: 24px;
+    font-size: 2em;
     text-align: center;
     margin-bottom: 20px;
-}
-
-.login-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
 }
 
 .el-button--primary {

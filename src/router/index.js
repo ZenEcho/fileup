@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('../views/test.vue'),
     },
     {
+      path: '/welcome',
+      name: 'welcome',
+      component: () => import('../views/dashboard/welcome.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/dashboard/Login.vue'),
@@ -59,12 +64,12 @@ router.beforeEach((to, from, next) => {
           if (response.data.status) {
             next();
           } else {
-            localStorage.removeItem('token');
+            localStorage.clear();
             next('/login');
           }
         })
         .catch(error => {
-          localStorage.removeItem('token');
+          localStorage.clear();
           next('/login');
           console.error(error);
         });
