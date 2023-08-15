@@ -1,31 +1,28 @@
 <template>
     <el-card class="Register-card">
-            <h1 class="Register-title">注册</h1>
-            <el-form ref="RegisterForm" :model="RegisterData" :rules="rules">
-                <el-form-item label="邮箱" prop="Email">
-                    <el-input v-model="RegisterData.Email"></el-input>
-                </el-form-item>
-                <el-form-item label="名称" prop="Username">
-                    <el-input v-model="RegisterData.Username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="Password">
-                    <el-input v-model="RegisterData.Password" type="password"></el-input>
-                </el-form-item>
-                <el-form-item label="验证码" prop="Captcha">
-                    <el-input v-model="RegisterData.Captcha"></el-input>
-                    <img v-if="captchaImage" :src="captchaImage" class="captcha-image" @click="generateCaptcha" />
-                </el-form-item>
-                <el-form-item class="Register-button">
-                    <el-button type="primary" @click="handleRegister">注册</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <span>已注册?</span>
-                    <el-button type="info" @click="goToLogin" link>登录</el-button>
-                    <span>or</span>
-                    <el-button type="info" @click="recoverPassword" link>找回密码</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+        <h1 class="Register-title">注册</h1>
+        <el-form ref="RegisterForm" :model="RegisterData" :rules="rules">
+            <el-form-item label="邮箱" prop="Email">
+                <el-input v-model="RegisterData.Email"></el-input>
+            </el-form-item>
+            <el-form-item label="名称" prop="Username">
+                <el-input v-model="RegisterData.Username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="Password">
+                <el-input v-model="RegisterData.Password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item label="验证码" prop="Captcha">
+                <el-input v-model="RegisterData.Captcha"></el-input>
+            </el-form-item>
+            <div class="Captcha">
+                <img v-if="captchaImage" :src="captchaImage" class="captcha-image" @click="generateCaptcha" />
+            </div>
+            <el-form-item class="Register-button">
+                <el-button type="primary" @click="handleRegister">注册</el-button>
+            </el-form-item>
+
+        </el-form>
+    </el-card>
 </template>
   
 <script>
@@ -98,12 +95,7 @@ export default {
                     });
             });
         },
-        goToLogin() {
-            this.$router.push('/login');
-        },
-        recoverPassword() {
-            return this.toast.error("暂时无法使用");
-        },
+
         generateCaptcha() {
 
             http.get('/auth/captcha', {
@@ -127,8 +119,13 @@ export default {
 </script>
   
 <style scoped>
+.Captcha {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 18px;
+}
 .Register-title {
-    font-size: 24px;
+    font-size: 2em;
     text-align: center;
     margin-bottom: 20px;
 }

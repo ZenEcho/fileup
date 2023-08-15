@@ -1,18 +1,14 @@
 <template>
     <div class="login-container">
-
         <div class="card">
-            <div class="form-box" v-if="status === 0">
-                <LoginCard :login-data="loginData" :rules="rules" />
+            <div class="form-box">
+                <LoginCard v-if="status === 0"></LoginCard>
+                <RegisterCard v-else-if="status === 1"></RegisterCard>
             </div>
-            <div class="form-box" v-else-if="status === 1">
-                <RegisterCard />
-            </div>
-
             <div>
-                <div class="con-box right" v-if="status === 0" style="">
-                    <h2>欢迎来到<span>图床对比</span></h2>
-                    <img src="../images/cat/2.png" alt="">
+                <div class="con-box right">
+                    <h2>登录<span>图床对比</span></h2>
+                    <LoginSvg></LoginSvg>
                     <el-form-item>
                         <span>没有账号?</span>
                         <el-button type="info" @click="goToRegister" link>注册</el-button>
@@ -20,9 +16,9 @@
                         <el-button type="info" @click="recoverPassword" link>找回密码</el-button>
                     </el-form-item>
                 </div>
-                <div class="con-box left" v-else-if="status === 1">
+                <div class="con-box left">
                     <h2>注册<span>图床对比</span></h2>
-                    <img src="../images/cat/1.png" alt="">
+                    <RegisterSvg></RegisterSvg>
                     <el-form-item>
                         <span>已注册?</span>
                         <el-button type="info" @click="goToLogin" link>登录</el-button>
@@ -39,11 +35,19 @@
 <script>
 import LoginCard from '@/views/dashboard/Login.vue';
 import RegisterCard from '@/views/dashboard/Register.vue';
-
+import LoginSvg from '@/views/dashboard/LoginSvg.vue';
+import RegisterSvg from '@/views/dashboard/RegisterSvg.vue';
+import { useToast } from "vue-toastification";
 export default {
+    setup() {
+        const toast = useToast();
+        return { toast }
+    },
     components: {
         LoginCard,
         RegisterCard,
+        LoginSvg,
+        RegisterSvg
     },
     data() {
         return {
@@ -53,20 +57,31 @@ export default {
     methods: {
         goToRegister() {
             let form_box = document.getElementsByClassName('form-box')[0];
-            form_box.style.transform = 'translateX(25em)';
-            this.status = 1
+            form_box.style.transform = 'translate(25em)';
+            setTimeout(() => {
+                this.status = 1
+            }, 450);
         },
         goToLogin() {
-            this.status = 0
-        }
+            let form_box = document.getElementsByClassName('form-box')[0];
+            form_box.style.transform = 'translate(0em)';
+            setTimeout(() => {
+                this.status = 0
+            }, 450);
+        },
+        recoverPassword() {
+            return this.toast.error("暂时无法使用");
+        },
     }
 };
 </script>
   
 <style scoped>
 .form-box {
+    width: 25em;
     height: 100%;
     transition: 0.5s ease-in-out;
+    z-index: 2;
 }
 
 .login-container {
@@ -74,7 +89,6 @@ export default {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-
 }
 
 .card {
@@ -85,22 +99,19 @@ export default {
 }
 
 .login-card {
+    padding: 1em;
     width: 25em;
     height: 34em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1em;
+    border: 1px #eee solid;
     position: absolute;
     top: 50%;
     left: -2px;
     transform: translate(0%, -50%);
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 1em;
-    border: 1px #eee solid;
-    z-index: 2;
 }
 
 .Register-card {
@@ -115,10 +126,8 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     border-radius: 1em;
     border: 1px #eee solid;
-    z-index: 2;
 }
 
 .con-box {
