@@ -16,7 +16,7 @@
 
 .main-title {
     width: 15em;
-    font-size: 2em;
+    font-size: 3em;
     text-align: center;
 }
 
@@ -63,7 +63,7 @@
 
 @media (max-width: 750px) {
     .main-title {
-        font-size: 1.7em !important;
+        font-size: 2em !important;
     }
 
 }
@@ -75,12 +75,12 @@
 
     .main-title {
         width: 100% !important;
-        font-size: 1.5em !important;
+        font-size: 1.7em !important;
     }
 
 }
-@media (max-width: 550px) {
+/* @media (max-width: 550px) {
     .main-title {
         font-size: 1.2em !important;
     }
-}
+} */

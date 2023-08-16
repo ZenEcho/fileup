@@ -16,6 +16,8 @@
             </template>
         </el-table-column>
     </el-table>
+    <el-pagination background layout="prev, pager, next" :page-count="totalDataCount" :page-size="pageSize"
+        @current-change="handlePageChange" />
 </template>
   
 <script>
@@ -46,6 +48,8 @@ export default {
                     "注册时间": "2023",
                 },
             ],
+            totalDataCount: 0,
+            pageSize: 10,
         };
     },
     methods: {
@@ -113,9 +117,16 @@ export default {
                     console.error(error);
                 });
         },
-        getDATA() {
+        handlePageChange(pageNumber) {
+            this.getDATA(pageNumber);
+        },
+        getDATA(pageNumber) {
             const isAuthenticated = localStorage.getItem('token');
-            http.post('/inclusion/website_inclusion_search', {pageSize:50}, {
+            http.post('/inclusion/website_inclusion_search', {
+                pageSize: 50,
+                current_page: pageNumber,
+                per_page: this.pageSize
+            }, {
                 headers: {
                     Authorization: isAuthenticated,
                 },
@@ -123,6 +134,7 @@ export default {
                 .then(response => {
                     const data = response.data;
                     this.data = data.data;
+                    this.totalDataCount = data.totalPages;
                     if (data.data.length === 0) {
                         return;
                     }
@@ -134,12 +146,6 @@ export default {
                 .catch(error => {
                     console.error(error);
                 });
-        },
-        showLoading() {
-            this.loading = true
-        },
-        hideLoading() {
-            this.loading = false
         },
         generateDynamicColumns(data) {
             return Object.keys(data[0]).map((field) => {

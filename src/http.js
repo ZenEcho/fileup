@@ -17,7 +17,6 @@ http.interceptors.response.use(
     response => {
         // 检查响应头是否有新 Token
         const Token = response.data.token;
-        console.log(Token);
         if (Token) {
             // 保存新 Token 到 localStorage
             localStorage.setItem('token', Token);

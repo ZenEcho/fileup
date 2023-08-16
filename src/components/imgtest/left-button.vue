@@ -13,6 +13,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
                     <div class="image-hosting-buttons">
                         <button :class="{ 'ButtonActive': filterType === 'all' }" @click="setFilterType('all')">全部</button>
                         <button :class="{ 'ButtonActive': filterType === 'foreign' }"
@@ -23,16 +24,20 @@
                         <button :class="{ 'ButtonActive': filterType === 'direct' }"
                             @click="setFilterType('direct')">直连</button>
                     </div>
+                    <div class="image-hosting-buttons" style="margin: 1em;">
+                        <el-autocomplete v-model="searchText" :fetch-suggestions="fetchSuggestions" placeholder="搜索图床"
+                            @select="handleSelect"></el-autocomplete>
+                    </div>
                     <div class="dataBox dataDiv">
                         <div v-for="(item, index) in filteredData" :key="index"
                             :class="{ 'shadow dataContent': true, 'dataContentActive': NewfilteredData.includes(item) }"
                             @click="selectItem(index, item)" :index="index">
-                            <span>{{ item.name }}</span>
+                            <span>{{ item.ImageHostingName }}</span>
                         </div>
                     </div>
                     <div class="select dataDiv">
                         <div v-for="(item, index) in NewfilteredData" :key="index" @click="removeSelectedItem(index)">
-                            <span>{{ item.name }}</span>
+                            <span>{{ item.ImageHostingName }}</span>
                         </div>
                     </div>
                 </div>
@@ -114,6 +119,7 @@ export default {
     emits: ['selected-indexes'], // 声明自定义事件
     data() {
         return {
+            searchText: '',
             NewfilteredData: [], // 用于存储的选择数据
             filterType: "all", // 存储筛选类型
             postData: {
@@ -150,30 +156,46 @@ export default {
                     { required: true, message: '请输入验证码', trigger: 'blur' },
                 ],
             },
+            suggestionsData: []
         };
     },
     // created() { this.refreshCode() },
     computed: {
         filteredData() {
             if (this.filterType === 'foreign') {
-                return this.data.filter(item => item.region === 0);
+                return this.data.filter(item => item.ImageHostingRegion === 0);
             }
             if (this.filterType === 'all') {
                 return this.data;
             }
             if (this.filterType === 'domestic') {
-                return this.data.filter(item => item.region === "CN");
+                return this.data.filter(item => item.ImageHostingRegion === 1);
             }
             if (this.filterType === 'CDN') {
-                return this.data.filter(item => item.CDN === 1);
+                return this.data.filter(item => item.ImageHostingCDN === 1);
             }
             if (this.filterType === 'direct') {
-                return this.data.filter(item => item.CDN === 0);
+                return this.data.filter(item => item.ImageHostingCDN === 0);
             }
 
         },
     },
     methods: {
+        handleSelect(suggestion) {
+            console.log('选中的建议:', suggestion);
+        },
+        fetchSuggestions(queryString) {
+            console.log(this.data);
+            if (queryString.trim() === '') {
+                return [];
+            }
+            const suggestions = this.data.filter(item => {
+                return item.ImageHostingName.toLowerCase().includes(queryString.toLowerCase());
+            });
+
+            console.log(suggestions);
+            return suggestions;
+        },
         selectItem(index, item) {
             if (!this.NewfilteredData.includes(item)) {
                 this.NewfilteredData.push(item);
@@ -225,8 +247,6 @@ export default {
 
         },
         refreshCaptcha() {
-
-
             http.get('/auth/captcha', {
                 credentials: 'include',
                 responseType: 'text', // 指定响应的数据类型为文本

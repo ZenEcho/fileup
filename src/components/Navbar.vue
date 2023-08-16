@@ -14,7 +14,7 @@
                     <div class="navbar-nav" style="text-align: right;">
                         <a class="nav-link" aria-current="page" href="/">盘络上传</a>
                         <a class="nav-link nav-link-activ" href="/imgtest">图床比拼</a>
-                        <a class="nav-link nav-link-activ" href="/login">控制面板</a>
+                        <a class="nav-link nav-link-activ" href="/dashboard">控制面板</a>
                     </div>
                 </div>
             </div>

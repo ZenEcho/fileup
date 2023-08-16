@@ -1,26 +1,46 @@
 <template>
     <div>
-        <p>{{ userInfo }}</p>
-        <p>{{ userInfo.username }}</p>
+        <data>
+            <el-autocomplete v-model="searchText" :fetch-suggestions="fetchSuggestions" placeholder="搜索图床"
+                @select="handleSelect"></el-autocomplete>
+        </data>
     </div>
 </template>
   
 <script>
+
+
 export default {
     data() {
         return {
-            userInfo: {} // 初始化 userInfo 数据
+            searchText: '',
+            suggestionsData: [
+                { value: 'vue', link: 'https://github.com/vuejs/vue' },
+                { value: 'element', link: 'https://github.com/ElemeFE/element' },
+                { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
+                { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
+                { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
+                { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
+                { value: 'babel', link: 'https://github.com/babel/babel' },
+            ],
         };
     },
-    mounted() {
-        // 在组件挂载后，从 localStorage 中读取 userInfo 数据
-        const storedUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+    methods: {
+        fetchSuggestions(queryString) {
+            if (queryString.trim() === '') {
+                return [];
+            }
 
-        if (storedUserInfo) {
-            this.userInfo = storedUserInfo; // 将数据存储到 userInfo 属性中
-        }
-        console.log(this.userInfo);
-    }
+            const suggestions = this.suggestionsData.filter(item => {
+                return item.value.toLowerCase().includes(queryString.toLowerCase());
+            });
+            console.log(suggestions);
+            return suggestions;
+        },
+        handleSelect(suggestion) {
+            console.log('选中的建议:', suggestion);
+        },
+    },
 };
 </script>
   

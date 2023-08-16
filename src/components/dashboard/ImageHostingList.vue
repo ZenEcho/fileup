@@ -34,6 +34,9 @@
                 </template>
             </el-table-column>
         </el-table>
+
+        <el-pagination background layout="prev, pager, next" :page-count="totalDataCount" :page-size="pageSize"
+            @current-change="handlePageChange" />
     </div>
 </template>
   
@@ -53,6 +56,8 @@ export default {
             selectedRows: [], // 选择的行
             tableColumns: [], // 动态生成的表格列
             originalRow: null,
+            totalDataCount: 0,
+            pageSize: 10, 
 
         };
     },
@@ -63,7 +68,6 @@ export default {
         },
         startDelete(row) {
             const isAuthenticated = localStorage.getItem('token');
-            console.log(row);
 
             http.post('/images_hosting/ImagesHosting_remove', { ID: row }, {
                 headers: {
@@ -85,9 +89,6 @@ export default {
         },
         saveEdit(index, row) {
             const editedRow = this.visibleData[index];
-
-            console.log(index);
-
             if (JSON.stringify(editedRow) != JSON.stringify(this.originalRow)) {
                 const isAuthenticated = localStorage.getItem('token');
                 http.post('/images_hosting/ImagesHosting_edit', row, {
@@ -97,7 +98,6 @@ export default {
                 })
                     .then(response => {
                         const data = response.data;
-                        console.log(data);
                         this.toast.success(data.message);
                     })
                     .catch(error => {
@@ -116,18 +116,27 @@ export default {
         handleSelectionChange(selection) {
             this.selectedRows = selection;
         },
-        loadData() {
+        handlePageChange(pageNumber) {
+            this.loadData(pageNumber);
+        },
+        loadData(pageNumber = 1) {
             this.loading = true;
             const isAuthenticated = localStorage.getItem('token');
-            http.post('/images_hosting/ImagesHosting_list', {}, {
+            http.post('/images_hosting/ImagesHosting_list', {
+                current_page: pageNumber,
+                per_page: this.pageSize
+            }, {
                 headers: {
                     Authorization: isAuthenticated,
                 },
             })
                 .then(response => {
+
                     const data = response.data;
                     this.rawData = data.data;
                     this.loading = false;
+                    this.totalDataCount = data.totalPages;
+
                     if (data.data.length === 0) {
                         return;
                     }
@@ -137,13 +146,14 @@ export default {
                         label: key,
                     }));
 
+
                     // this.visibleData = this.visibleData = JSON.parse(JSON.stringify(this.rawData));
                     this.visibleData = this.rawData
 
 
                 })
                 .catch(error => {
-                    // console.error(error);
+                    console.error(error);
                 });
         },
 

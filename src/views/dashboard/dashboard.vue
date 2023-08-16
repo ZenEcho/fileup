@@ -30,7 +30,7 @@
                                 <el-menu-item index="1-2">密码修改</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
-                        <el-menu @select="handleMenuSelect" default-active="2-1">
+                        <el-menu @select="handleMenuSelect" default-active="2-0">
                             <el-sub-menu index="2">
                                 <template #title>
                                     <el-icon>
@@ -86,7 +86,7 @@ export default {
 
     data() {
         return {
-            selectedMenuItem: '2-1',
+            selectedMenuItem: '2-0',
             userInfo: {}
         }
     },
