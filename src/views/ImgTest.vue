@@ -199,9 +199,9 @@ export default {
   mounted() {
     this.startCountdown();
 
-    document.title = "图床大比拼-2023年图床选什么?";
-    const favicon = document.querySelector('link[rel="icon"]');
-    favicon.href = "src/assets/images/up.ico";
+    // document.title = "图床大比拼-2023年图床选什么?";
+    // const favicon = document.querySelector('link[rel="icon"]');
+    // favicon.href = "src/assets/images/up.ico";
 
 
   },

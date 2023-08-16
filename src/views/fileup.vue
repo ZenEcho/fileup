@@ -137,9 +137,9 @@ export default {
 
   },
   mounted() {
-    document.title = "盘络上传";
-    const favicon = document.querySelector('link[rel="icon"]');
-    favicon.href = "src/assets/logo.ico";
+    // document.title = "盘络上传";
+    // const favicon = document.querySelector('link[rel="icon"]');
+    // favicon.href = "src/assets/logo.ico";
 
   },
 }

@@ -21,12 +21,17 @@
 }
 
 .main-header .header-img {
-    width: 20em;
+    width: 500px;
+
+    
+}
+.main-header .header-img:hover {
+    transform: scale3d(1.05, 1.05, 1.05);
 }
 
 @media (max-height: 800px) {
     .main-header .header-img {
-        width: 15em;
+        width: 400px;
     }
 }
 
@@ -57,7 +62,7 @@
 
 @media (max-width: 850px) {
     .main-header .header-img {
-        width: 15em;
+        /* width: 20vh; */
     }
 }
 

@@ -8,11 +8,19 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: {
+        title: '盘络上传扩展',
+        favicon: 'src/assets/logo.ico' // 设置页面 Favicon
+      }
     },
     {
       path: '/imgtest',
       name: 'imgtest',
       component: () => import('../views/ImgTest.vue'),
+      meta: {
+        title: '图床对比-2023年图床大比拼',
+        favicon: 'src/assets/images/up.ico' // 设置页面 Favicon
+      }
     },
     {
       path: '/test',
@@ -23,24 +31,36 @@ const router = createRouter({
       path: '/welcome',
       name: 'welcome',
       component: () => import('../views/dashboard/welcome.vue'),
+      meta: {
+        title: '欢迎访问图床对比',
+        favicon: 'src/assets/images/up.ico' // 设置页面 Favicon
+      }
     },
     {
       path: '/login',
       name: 'login',
       // component: () => import('../views/dashboard/Login.vue'),
       component: () => import('../views/dashboard/welcome.vue'),
+      meta: {
+        title: '图床对比登录',
+        favicon: 'src/assets/images/up.ico' // 设置页面 Favicon
+      }
     },
     {
       path: '/register',
       name: 'register',
       // component: () => import('../views/dashboard/Register.vue'),
       component: () => import('../views/dashboard/welcome.vue'),
+      meta: {
+        title: '图床对比注册',
+        favicon: 'src/assets/images/up.ico' // 设置页面 Favicon
+      }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/dashboard/dashboard.vue'),
-      meta: { requiresAuth: true }, // 设置需要登录验证
+      meta: { requiresAuth: true, title: '图床对比后台', favicon: 'src/assets/images/up.ico' },
     },
     {
       path: '/:catchAll(.*)',
@@ -52,6 +72,12 @@ const router = createRouter({
 
 // 导航守卫
 router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || 'Default Title'; // 设置页面标题
+  const favicon = document.querySelector('link[rel="icon"]');
+  if (to.meta.favicon && favicon) {
+    favicon.href = to.meta.favicon;
+  }
+
   const isAuthenticated = localStorage.getItem('token'); // 假设你在登录成功后将token保存在LocalStorage
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (isAuthenticated) {

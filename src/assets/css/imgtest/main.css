@@ -36,6 +36,16 @@
     position: relative;
 }
 
+.loadingTime:hover,
+.imageSize:hover {
+    transform: scale3d(1.1, 1.1, 1.1);
+}
+
+.box svg:hover {
+    transform: scale3d(1.1, 1.1, 1.1);
+}
+
+
 .wrapperBox .box img {
     display: block;
     width: 100%;

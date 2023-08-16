@@ -1,46 +1,46 @@
 <template>
     <div>
-        <data>
-            <el-autocomplete v-model="searchText" :fetch-suggestions="fetchSuggestions" placeholder="搜索图床"
-                @select="handleSelect"></el-autocomplete>
-        </data>
+        <el-autocomplete v-model="searchText" :fetch-suggestions="fetchSuggestions" placeholder="搜索图床"
+            @select="handleSelect"></el-autocomplete>
     </div>
 </template>
   
 <script>
-
-
 export default {
     data() {
         return {
             searchText: '',
-            suggestionsData: [
-                { value: 'vue', link: 'https://github.com/vuejs/vue' },
-                { value: 'element', link: 'https://github.com/ElemeFE/element' },
-                { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
-                { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
-                { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
-                { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
-                { value: 'babel', link: 'https://github.com/babel/babel' },
-            ],
+            data: [
+                {
+                    ID: 18,
+                    ImageHostingName: "789789",
+
+                },
+                {
+                    ID: 16,
+                    ImageHostingName: "45645",
+
+                },
+                {
+                    ID: 10,
+                    ImageHostingName: "123",
+
+                },
+            ]
         };
     },
     methods: {
-        fetchSuggestions(queryString) {
-            if (queryString.trim() === '') {
-                return [];
-            }
+        fetchSuggestions(query) {
+            const matchedSuggestions = this.data.filter(item =>item.ImageHostingName.toLowerCase().includes(query.toLowerCase())
+            ).map(item => ({ value: item.ImageHostingName }));
 
-            const suggestions = this.suggestionsData.filter(item => {
-                return item.value.toLowerCase().includes(queryString.toLowerCase());
-            });
-            console.log(suggestions);
-            return suggestions;
+            return matchedSuggestions;
         },
-        handleSelect(suggestion) {
-            console.log('选中的建议:', suggestion);
-        },
-    },
+
+        handleSelect(item) {
+            this.searchText = item.ImageHostingName;
+        }
+    }
 };
 </script>
   

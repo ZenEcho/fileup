@@ -24,14 +24,15 @@
                         <button :class="{ 'ButtonActive': filterType === 'direct' }"
                             @click="setFilterType('direct')">直连</button>
                     </div>
-                    <div class="image-hosting-buttons" style="margin: 1em;">
+                    <div class="image-hosting-buttons" style="margin: 1em; display: flex !important;">
                         <el-autocomplete v-model="searchText" :fetch-suggestions="fetchSuggestions" placeholder="搜索图床"
-                            @select="handleSelect"></el-autocomplete>
+                            @select="handleSelect" class="inline-input w-50"></el-autocomplete>
                     </div>
                     <div class="dataBox dataDiv">
+                      
                         <div v-for="(item, index) in filteredData" :key="index"
                             :class="{ 'shadow dataContent': true, 'dataContentActive': NewfilteredData.includes(item) }"
-                            @click="selectItem(index, item)" :index="index">
+                            @click="selectItem(item)" :index="index">
                             <span>{{ item.ImageHostingName }}</span>
                         </div>
                     </div>
@@ -156,10 +157,8 @@ export default {
                     { required: true, message: '请输入验证码', trigger: 'blur' },
                 ],
             },
-            suggestionsData: []
         };
     },
-    // created() { this.refreshCode() },
     computed: {
         filteredData() {
             if (this.filterType === 'foreign') {
@@ -182,21 +181,24 @@ export default {
     },
     methods: {
         handleSelect(suggestion) {
-            console.log('选中的建议:', suggestion);
+            this.searchText = '';
+            const selectedObject = this.data.find(item =>
+                item.ImageHostingName === suggestion.value
+            );
+            this.selectItem(selectedObject)
         },
         fetchSuggestions(queryString) {
-            console.log(this.data);
             if (queryString.trim() === '') {
                 return [];
             }
-            const suggestions = this.data.filter(item => {
-                return item.ImageHostingName.toLowerCase().includes(queryString.toLowerCase());
-            });
+            const suggestions = this.filteredData.filter(item =>
+                item.ImageHostingName.toLowerCase().includes(queryString.toLowerCase())
+            ).map(item => ({ value: item.ImageHostingName }));
 
-            console.log(suggestions);
             return suggestions;
         },
-        selectItem(index, item) {
+
+        selectItem(item) {
             if (!this.NewfilteredData.includes(item)) {
                 this.NewfilteredData.push(item);
             } else {
