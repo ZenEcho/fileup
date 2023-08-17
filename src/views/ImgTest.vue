@@ -20,9 +20,8 @@ import leftButton from '../components/imgtest/left-button.vue'
         <div class="image">
           <div class="loading" v-if="!item.loaded"></div>
           <div class="alert alert-danger" role="alert" v-if="item.loadFailed">图片加载失败</div>
-          <img :src="item.TestImageURL" :style="{ display: item.loaded ? 'block' : 'none' }" @loading="handleLoadStart"
-            @load="onImageLoad(item)" @error="onImageError(item)" v-if="!item.loadFailed" data-bs-toggle="tooltip"
-            :title="item.TestImageURL" />
+          <img :src="item.TestImageURL" :style="{ display: item.loaded ? 'block' : 'none' }" @load="onImageLoad(item)"
+            @error="onImageError(item)" v-if="!item.loadFailed" data-bs-toggle="tooltip" :title="item.TestImageURL" />
         </div>
         <p class="text-center row" style="font-size: 0.9em;">
           <span class="loadingTime col" style="color: #dc3545;">{{ item.loadTime }}</span>
@@ -161,10 +160,6 @@ export default {
         });
 
     },
-    handleLoadStart(item) {
-      item.loaded = false;
-      console.log("1");
-    },
     onImageLoad(item) {
       this.getImageSize(item);
       const startTime = parseInt(item.TestImageURL.match(/cache=(\d+)/)[1]);
@@ -172,7 +167,14 @@ export default {
 
       const endTime = Date.now();
       let loadTime = endTime - startTime
-      item.loadTime = "加载时间:" + loadTime + "毫秒";
+      let time;
+      if (loadTime > 1000) {
+        loadTime = loadTime / 1000
+        time = "秒"
+      } else {
+        time = "毫秒"
+      }
+      item.loadTime = "加载时间:" + loadTime + time;
       item.loadFailed = false;
       item.loaded = true;
     },

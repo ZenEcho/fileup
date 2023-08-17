@@ -92,7 +92,7 @@ export default {
 }
 
 .card {
-    width: 50em;
+    min-width: 50em;
     height: 28em;
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
