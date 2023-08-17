@@ -7,7 +7,7 @@
             :prop="column.prop"></el-table-column>
         <el-table-column label="操作" width="140px" fixed="right">
             <template v-slot="{ row }">
-                <el-button size="small" type="success" @click="handleSuccess(row)">
+                <el-button size="small" type="success" @click="handleSuccess(row)" v-if="row.ImageHostingApproved != 1">
                     通过
                 </el-button>
                 <el-button size="small" type="danger" @click="handleDelete(row)">
