@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView,
       meta: {
         title: '盘络上传扩展',
-        favicon: '@/assets/logo.ico' // 设置页面 Favicon
+        favicon: 'https://cdn-us.imgs.moe/2023/06/03/647a8b4c4d502.ico' // 设置页面 Favicon
       }
     },
     {
@@ -19,7 +19,7 @@ const router = createRouter({
       component: () => import('../views/ImgTest.vue'),
       meta: {
         title: '图床对比-2023年图床大比拼',
-        favicon: '@/assets/images/up.ico' // 设置页面 Favicon
+        favicon: 'https://cdn-us.imgs.moe/2023/07/24/64be512ade53d.ico' // 设置页面 Favicon
       }
     },
     {
@@ -33,7 +33,7 @@ const router = createRouter({
       component: () => import('../views/dashboard/welcome.vue'),
       meta: {
         title: '欢迎访问图床对比',
-        favicon: '@/assets/images/up.ico' // 设置页面 Favicon
+        favicon: 'https://cdn-us.imgs.moe/2023/07/24/64be512ade53d.ico' // 设置页面 Favicon
       }
     },
     {
@@ -43,7 +43,7 @@ const router = createRouter({
       component: () => import('../views/dashboard/welcome.vue'),
       meta: {
         title: '图床对比登录',
-        favicon: '@/assets/images/up.ico' // 设置页面 Favicon
+        favicon: 'https://cdn-us.imgs.moe/2023/07/24/64be512ade53d.ico' // 设置页面 Favicon
       }
     },
     {
@@ -53,14 +53,14 @@ const router = createRouter({
       component: () => import('../views/dashboard/welcome.vue'),
       meta: {
         title: '图床对比注册',
-        favicon: '@/assets/images/up.ico' // 设置页面 Favicon
+        favicon: 'https://cdn-us.imgs.moe/2023/07/24/64be512ade53d.ico' // 设置页面 Favicon
       }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/dashboard/dashboard.vue'),
-      meta: { requiresAuth: true, title: '图床对比后台', favicon: '@/assets/images/up.ico' },
+      meta: { requiresAuth: true, title: '图床对比后台', favicon: 'https://cdn-us.imgs.moe/2023/07/24/64be512ade53d.ico' },
     },
     {
       path: '/:catchAll(.*)',
