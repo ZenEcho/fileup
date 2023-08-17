@@ -61,18 +61,15 @@ export default {
         },
         handleDelete(row) {
             const isAuthenticated = localStorage.getItem('token');
-            fetch("http://localhost:3199/inclusion/remove_inclusion", {
-                method: 'POST',
+
+            http.post('/inclusion/remove_inclusion', { ID: row.ID }, {
                 headers: {
                     Authorization: isAuthenticated,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ID: row.ID }),
             })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
+                .then(response => {
+                    const data = response.data;
                     if (data.status) {
                         this.toast.success(data.message);
                         this.data.splice(this.data.findIndex(item => item.ID === row.ID), 1)
@@ -80,7 +77,7 @@ export default {
                         this.toast.error(data.message);
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                 });
         },
