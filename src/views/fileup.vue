@@ -6,7 +6,7 @@
   <full-page :options="options" id="fullpage" ref="fullpage">
     <div class="section" id="section0">
       <div class="app_neme mx-auto">
-        <img src="src/assets/logo.ico">
+        <img src="@/assets/logo.ico">
         <h1>盘络上传</h1>
       </div>
       <h2 class="text-light text-center p-5">盘络图床开发的浏览器扩展程序，为用户提供简单快速的文件上传功能，使用户可以快速获取外链并分享！</h2>
@@ -26,14 +26,14 @@
       <div class="slide active">
         <h1>功能超丰富的上传功能</h1>
         <div class="image-container">
-          <img src="src/assets/images/sc.png" alt="上传页面">
+          <img src="@/assets/images/sc.png" alt="上传页面">
         </div>
         <span class="text-center text-white p-2">拖拽上传、粘贴上传、其中包括网络资源和本地资源</span>
       </div>
       <div class="slide">
         <h1>多程序支持的配置</h1>
         <div class="image-container">
-          <img src="src/assets/images/pz.png" alt="配置页面">
+          <img src="@/assets/images/pz.png" alt="配置页面">
         </div>
         <span
           class="text-center text-white p-2">支持:兰空程序、简单程序、imgurl程序、chevereto程序、hellohao程序、sm.ms图床、imgur图床、腾讯云cos、阿里云oss、aws
@@ -42,7 +42,7 @@
       <div class="slide">
         <h1>记录上传的每一刻</h1>
         <div class="image-container">
-          <img src="src/assets/images/jl.png" alt="上传记录">
+          <img src="@/assets/images/jl.png" alt="上传记录">
         </div>
         <span class="text-center text-white p-2">存储你的上传记录,下次使用更方便</span>
       </div>
@@ -139,7 +139,7 @@ export default {
   mounted() {
     // document.title = "盘络上传";
     // const favicon = document.querySelector('link[rel="icon"]');
-    // favicon.href = "src/assets/logo.ico";
+    // favicon.href = "@/assets/logo.ico";
 
   },
 }
