@@ -4,7 +4,7 @@ import { useToast } from "vue-toastification";
 import router from '@/router'; // Import your Vue Router instance
 const toast = useToast();
 const http = axios.create({
-    baseURL: 'http://localhost:3199', // 设置基础 URL
+    baseURL: 'https://server.fileup.dev', // 设置基础 URL
     withCredentials: true,
     timeout: 60000,
     headers: {
