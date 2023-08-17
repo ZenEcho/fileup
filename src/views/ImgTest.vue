@@ -91,17 +91,6 @@ export default {
   },
 
   methods: {
-    startCountdown() {
-      const countdownInterval = setInterval(() => {
-        if (this.countdown > 0) {
-          this.countdown--;
-        } else {
-          clearInterval(countdownInterval);
-          this.isCountdownFinished = true; // 设置标志位为 true
-          this.fetchData(); // 获取数据
-        }
-      }, 1000); // 每隔一秒执行一次
-    },
     fetchData() {
 
       http.post('/api/ImagesHosting', {
@@ -112,6 +101,16 @@ export default {
           const data = response.data;
           this.data = data.data;
           this.shuffleData();
+          const countdownInterval = setInterval(() => {
+            if (this.countdown > 0) {
+              this.countdown--;
+            } else {
+              clearInterval(countdownInterval);
+              this.isCountdownFinished = true; // 设置标志位为 true
+              this.PageRendering(this.shuffledData);
+            }
+          }, 1000); // 每隔一秒执行一次
+
         })
         .catch(error => {
           console.error(error);
@@ -123,8 +122,7 @@ export default {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
-      this.shuffledData = array;
-      this.PageRendering(this.shuffledData);
+      return this.shuffledData = array;
     },
     PageRendering(array) {
       array.forEach(item => {
@@ -196,13 +194,7 @@ export default {
     },
   },
   mounted() {
-    this.startCountdown();
-
-    // document.title = "图床大比拼-2023年图床选什么?";
-    // const favicon = document.querySelector('link[rel="icon"]');
-    // favicon.href = "src/assets/images/up.ico";
-
-
+    this.fetchData()
   },
 };
 </script>
