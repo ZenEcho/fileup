@@ -20,8 +20,9 @@ import leftButton from '../components/imgtest/left-button.vue'
         <div class="image">
           <div class="loading" v-if="!item.loaded"></div>
           <div class="alert alert-danger" role="alert" v-if="item.loadFailed">图片加载失败</div>
-          <img :src="item.TestImageURL" :style="{ display: item.loaded ? 'block' : 'none' }" @loading="handleLoadStart" @load="onImageLoad(item)"
-            @error="onImageError(item)" v-if="!item.loadFailed" data-bs-toggle="tooltip" :title="item.TestImageURL" />
+          <img :src="item.TestImageURL" :style="{ display: item.loaded ? 'block' : 'none' }" @loading="handleLoadStart"
+            @load="onImageLoad(item)" @error="onImageError(item)" v-if="!item.loadFailed" data-bs-toggle="tooltip"
+            :title="item.TestImageURL" />
         </div>
         <p class="text-center row" style="font-size: 0.9em;">
           <span class="loadingTime col" style="color: #dc3545;">{{ item.loadTime }}</span>
@@ -104,7 +105,6 @@ export default {
     fetchData() {
 
       http.post('/api/ImagesHosting', {
-        withCredentials: false,
         per_page: true
       }, {
       })
@@ -112,7 +112,6 @@ export default {
           const data = response.data;
           this.data = data.data;
           this.shuffleData();
-          console.log(response.data);
         })
         .catch(error => {
           console.error(error);
@@ -120,10 +119,10 @@ export default {
     },
     shuffleData() {
       const array = this.data;
-      // for (let i = array.length - 1; i > 0; i--) {
-      //   const j = Math.floor(Math.random() * (i + 1));
-      //   [array[i], array[j]] = [array[j], array[i]];
-      // }
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
       this.shuffledData = array;
       this.PageRendering(this.shuffledData);
     },
