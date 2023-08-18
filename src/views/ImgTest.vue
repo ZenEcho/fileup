@@ -62,8 +62,12 @@ import leftButton from '../components/imgtest/left-button.vue'
     <footer>
       <div class="row">
         <p><span>Copyright 2023 欢迎访问图床大比拼</span></p>
-        <p><a href="https://github.com/ZenEcho/fileup.dev">GitHub</a>,<a href="https://fileup.dev/imgtest">2023免费图床</a>,<a
-            href="https://fileup.dev/imgtest">国内外免费图床</a>,<a href="https://fileup.dev/imgtest">最新2023免费图床</a>
+        <p>
+          <a href="https://github.com/ZenEcho/fileup.dev">GitHub</a>
+          ,<a href="https://fileup.dev/imgtest">2023免费图床</a>
+          ,<a href="https://fileup.dev/imgtest">国内外免费图床</a>
+          ,<a href="https://fileup.dev/imgtest">最新2023免费图床</a>
+          ,<a href="https://dr.cchostvps.xyz/">DR导航</a>
         </p>
       </div>
     </footer>
