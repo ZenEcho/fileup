@@ -66,6 +66,10 @@ const router = createRouter({
       path: '/:catchAll(.*)',
       name: '404',
       component: () => import('../views/404.vue'),
+      meta: {
+        title: '404',
+        favicon: 'https://cdn-us.imgs.moe/2023/06/03/647a8b4c4d502.ico' 
+      }
     }
   ],
 });

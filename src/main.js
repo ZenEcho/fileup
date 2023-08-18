@@ -11,15 +11,15 @@ import router from './router'
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css'; // Import the CSS file
 
-import VueFullPage from 'vue-fullpage.js'
-import 'fullpage.js/dist/fullpage.min.css' // 引入fullpage.js的样式文件
+// import VueFullPage from 'vue-fullpage.js'
+// import 'fullpage.js/dist/fullpage.min.css' // 引入fullpage.js的样式文件
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 const app = createApp(App)
 app.use(router)
-app.use(VueFullPage)
+// app.use(VueFullPage)
 app.use(ElementPlus)
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

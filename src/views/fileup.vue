@@ -1,145 +1,171 @@
 <template>
-  <section class="main-section"
-    style="position: sticky; top: 0px; z-index: 10; background-color: #00BCD4; ">
+  <header style="position: sticky; top: 0px; z-index: 10; background-color: #0F62FE; ">
     <Navbar></Navbar>
-  </section>
-  <full-page :options="options" id="fullpage" ref="fullpage">
-    <div class="section" id="section0">
+  </header>
+  <section id="section0">
+    <div>
       <div class="app_neme mx-auto">
-        <img src="@/assets/logo.ico">
         <h1>盘络上传</h1>
       </div>
-      <h2 class="text-light text-center p-5">盘络图床开发的浏览器扩展程序，为用户提供简单快速的文件上传功能，使用户可以快速获取外链并分享！</h2>
+      <h2 class="text-light text-center p-5">为用户提供简单快速的文件上传功能，使用户可以快速获取外链并分享！</h2>
       <div class="text-center">
-        <a class="btn btn-primary btn-lg DownloadButton"
+        <a class="btn btn-danger btn-lg DownloadButton"
           href="https://microsoftedge.microsoft.com/addons/detail/%E7%9B%98%E7%BB%9C%E4%B8%8A%E4%BC%A0/knmklgmbbbaadnfokcokobnlihdiiloe"
-          target="_blank"><i class="bi bi-browser-edge"></i> Edge下载</a>
-        <a class="btn btn-primary btn-lg DownloadButton"
+          target="_blank"> Edge下载</a>
+        <a class="btn btn-warning btn-lg DownloadButton"
           href="https://chrome.google.com/webstore/detail/%E7%9B%98%E7%BB%9C%E4%B8%8A%E4%BC%A0/lhbncdbejjjbbljkdplddajgmeconcnk"
-          target="_blank"><i class="bi bi-browser-chrome"></i> Chrome下载</a>
-        <a class="btn btn-primary btn-lg DownloadButton"
-          href="https://addons.mozilla.org/zh-CN/firefox/addon/%E7%9B%98%E7%BB%9C%E4%B8%8A%E4%BC%A0/" target="_blank"><i
-            class="bi bi-browser-firefox"></i> Firefox下载</a>
+          target="_blank"> Chrome下载</a>
+        <a class="btn btn-danger btn-lg DownloadButton"
+          href="https://addons.mozilla.org/zh-CN/firefox/addon/%E7%9B%98%E7%BB%9C%E4%B8%8A%E4%BC%A0/" target="_blank">
+          Firefox下载</a>
+
       </div>
     </div>
-    <div class="section text-center" id="section1">
-      <div class="slide active">
-        <h1>功能超丰富的上传功能</h1>
-        <div class="image-container">
-          <img src="@/assets/images/sc.png" alt="上传页面">
+  </section>
+  <section id="section1">
+    <div class="Function-illustrate container">
+      <h3>功能优势</h3>
+      <h1>简约高效</h1>
+      <p>
+        <span>专注图床存储</span><br>
+        <span>多方式上传，就很方便</span>
+      </p>
+    </div>
+    <div id="Function" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="https://cdn-us.imgs.moe/2023/07/04/64a414475a4ec.gif" alt="粘贴上传" class="d-block w-100 mx-auto">
+          <h2>粘贴上传</h2>
         </div>
-        <span class="text-center text-white p-2">拖拽上传、粘贴上传、其中包括网络资源和本地资源</span>
+        <div class="carousel-item">
+          <img src="https://cdn-us.imgs.moe/2023/07/04/64a4145276e67.gif" alt="拖拽上传" class="d-block w-100 mx-auto">
+          <h2>拖拽上传</h2>
+        </div>
+        <div class="carousel-item">
+          <img src="https://cdn-us.imgs.moe/2023/07/04/64a414574dba6.gif" alt="右键上传" class="d-block w-100 mx-auto">
+          <h2>右键上传</h2>
+        </div>
       </div>
-      <div class="slide">
-        <h1>多程序支持的配置</h1>
-        <div class="image-container">
-          <img src="@/assets/images/pz.png" alt="配置页面">
-        </div>
-        <span
-          class="text-center text-white p-2">支持:兰空程序、简单程序、imgurl程序、chevereto程序、hellohao程序、sm.ms图床、imgur图床、腾讯云cos、阿里云oss、aws
-          s3、自定义上传等</span>
+      <div class="carousel-indicators" style="position: static;">
+        <button type="button" data-bs-target="#Function" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#Function" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#Function" data-bs-slide-to="2" aria-label="Slide 3"></button>
       </div>
-      <div class="slide">
-        <h1>记录上传的每一刻</h1>
-        <div class="image-container">
-          <img src="@/assets/images/jl.png" alt="上传记录">
+      <button class="carousel-control-prev" type="button" data-bs-target="#Function" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#Function" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
+  <section id="section2">
+    <div class="Auto-Insert">
+      <div class="Auto-Insert-left">
+        <div class="Auto-Insert-illustrate">
+          <p><span class="Auto-Insert-t">盘络定制功能</span></p>
+          <p>
+          <h1 class="Auto-Insert-h">编辑框自动插入</h1>
+          </p>
+          <p><span class="Auto-Insert-i">这是一个非常方便的功能，它可以自动将您上传的图片插入到输入框/编辑框里。</span></p>
         </div>
-        <span class="text-center text-white p-2">存储你的上传记录,下次使用更方便</span>
+        <div style="padding: 1em;">
+          <table>
+            <tr>
+              <td colspan="4"><strong>经过测试的适配情况</strong></td>
+            </tr>
+            <tr>
+              <td>Discuz程序论坛</td>
+              <td>支持</td>
+              <td>支持</td>
+              <td>支持</td>
+            </tr>
+            <tr>
+              <td>Xiuno程序论坛</td>
+              <td>支持</td>
+              <td>支持</td>
+              <td>支持</td>
+            </tr>
+            <tr>
+              <td>typecho博客</td>
+              <td>无</td>
+              <td>无</td>
+              <td>支持(文章)</td>
+            </tr>
+            <tr>
+              <td>WordPress博客(6.2以上)</td>
+              <td>无</td>
+              <td>无</td>
+              <td>支持(古腾堡)</td>
+            </tr>
+            <tr>
+              <td>Halo建站(2.6以上)</td>
+              <td>无</td>
+              <td>无</td>
+              <td>支持(默认编辑器)</td>
+            </tr>
+            <tr>
+              <td>emlog博客</td>
+              <td>无</td>
+              <td>无</td>
+              <td>支持</td>
+            </tr>
+            <tr>
+              <td>zblog博客</td>
+              <td>无</td>
+              <td>无</td>
+              <td>支持</td>
+            </tr>
+            <tr>
+              <td colspan="4"><strong><a
+                    href="https://github.com/ZenEcho/PLExtension/blob/master/%E8%87%AA%E5%8A%A8%E6%8F%92%E5%85%A5%E6%94%AF%E6%8C%81.md"
+                    target="_blank" rel="noopener noreferrer">更多适配</a></strong></td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div class="Auto-Insert-right" >
+        <AutoInsert></AutoInsert>
       </div>
     </div>
-    <div class="section" id="section2">
-      <h1 class="mx-auto" data-text="功能展示,准备👌了吗">功能展示,准备</h1>
-      <div class="button text-center">
-        <button id="Function_Start_button">请先安装插件</button>
-      </div>
+  </section>
+
+  <section id="section4">
+    <h1>了解扩展最新消息</h1>
+    <h2><a href="https://t.me/pnglog">加入讨论组</a></h2>
+    <div class="privacy mx-auto">
+      <p>
+        <a class="btn btn-primary btn-lg DownloadButton " href="https://github.com/ZenEcho/fileup.dev" target="_blank"><i
+            class="bi bi-github"></i> 页面项目 GitHub</a>
+        <a class="btn btn-primary btn-lg DownloadButton" href="https://github.com/ZenEcho/PLExtension" target="_blank"><i
+            class="bi bi-github"></i> 扩展项目 GitHub</a>
+      </p>
+      <p><a href="https://icp.gov.moe/?keyword=20234578" target="_blank">萌ICP备20234578号</a></p>
     </div>
-    <div class="section text-center" id="section3">
-      <div class="slide active">
-        <h1>粘贴上传</h1>
-        <div class="image-container">
-          <img src="https://cdn-us.imgs.moe/2023/07/04/64a414475a4ec.gif" alt="粘贴上传">
-        </div>
-        <span
-          class="text-center text-white p-2">"粘贴上传"便捷的文件上传功能，支持直接粘贴图片数据、图片链接或本地文件到上传框，实现快速上传。省去了繁琐的选择步骤，只需简单复制并粘贴，即可将文件上传。</span>
-      </div>
-      <div class="slide ">
-        <h1>拖拽上传</h1>
-        <div class="image-container">
-          <img src="https://cdn-us.imgs.moe/2023/07/04/64a4145276e67.gif" alt="粘贴上传">
-        </div>
-        <span
-          class="text-center text-white p-2">"拖拽上传"是便捷的文件上传方式。只需将文件从本地拖动到指定区域即可完成上传，还可以快速拖拽多个文件或频繁上传文件，提高工作效率，为用户带来便利和舒适的上传体验。</span>
-      </div>
-      <div class="slide ">
-        <h1>右键上传</h1>
-        <div class="image-container">
-          <img src="https://cdn-us.imgs.moe/2023/07/04/64a414574dba6.gif" alt="粘贴上传">
-        </div>
-        <span
-          class="text-center text-white p-2">"右键上传"是浏览器右键菜单中的便捷文件上传方式。用户只需在网页上对着图片右键点击，选择上传选项，即可完成文件上传。用户可以在浏览网页的同时，快速上传图片。</span>
-      </div>
-      <div class="slide ">
-        <div class="image-container">
-          <h1>GitHub插入</h1>
-          <img src="https://cdn-us.imgs.moe/2023/06/06/647f3b9b0fb88.gif" alt="GitHub测试">
-          <h1>Typecho插入</h1>
-          <img src="https://cdn-us.imgs.moe/2023/06/06/647f3b9b590e1.gif" alt="ty测试">
-          <h1>WordPress插入</h1>
-          <img src="https://cdn-us.imgs.moe/2023/06/06/647f3b9bc6a46.gif" alt="wp测试">
-        </div>
-        <span class="text-center text-white p-2">盘络上传独家功能,自动将上传的图片插入到编辑框,<a
-            href="https://github.com/ZenEcho/PLExtension/blob/master/%E8%87%AA%E5%8A%A8%E6%8F%92%E5%85%A5%E6%94%AF%E6%8C%81.md">更多插入支持查看</a></span>
-      </div>
-    </div>
-    <div class="section  text-center" id="section4">
-      <h1>了解扩展最新消息</h1>
-      <h2><a href="http://pnglog.com/">关注盘洛图床</a></h2>
-      <div class="privacy mx-auto">
-        <p>
-          <a class="btn btn-primary btn-lg " href="https://github.com/ZenEcho/fileup.dev" target="_blank"><i
-              class="bi bi-github"></i> 页面项目 GitHub</a>
-          <a class="btn btn-primary btn-lg " href="https://github.com/ZenEcho/PLExtension" target="_blank"><i
-              class="bi bi-github"></i> 扩展项目 GitHub</a>
-        </p>
-        <p><a href="https://icp.gov.moe/?keyword=20234578" target="_blank">萌ICP备20234578号</a></p>
-      </div>
-    </div>
-  </full-page>
+  </section>
 </template>
 <script>
+import AutoInsert from '@/components/AutoInsert.vue';
+
 let Play_begins = false;
 
 export default {
+  components: {
+    AutoInsert,
+  },
   data() {
     return {
-      options: {
-        anchors: ['page1', 'page2', 'page3', 'page4', 'page5'],//页码后缀
-        // loopTop: true,//无限循环
-        // loopBottom: true,
-        autoScrolling: false,
-        // navigation: true,//开启导航条
-        // navigationTooltips: ['首页', '介绍', '功能', '展示', '关注'],//导航提示内容
-        showActiveTooltip: true, //显示导航提示
-        afterLoad: function (origin, destination, direction) {
-          if (destination.index == 2) {
-            if (Play_begins == true) { return; }
-            
-            window.postMessage({ type: 'Detect_installation_status', data: "莫西莫西,盘络你在吗?" }, '*');
-            Play_begins = true
-          }
-
-
-        }
-      }
     };
   },
   beforeDestroy() {
 
   },
   mounted() {
-    // document.title = "盘络上传";
-    // const favicon = document.querySelector('link[rel="icon"]');
-    // favicon.href = "@/assets/logo.ico";
+
 
   },
 }

@@ -1,49 +1,42 @@
 <template>
-    <el-row>
-        <el-col v-for="(o, index) in 5" :key="o" :span="8" :offset="index > 0 ? 2 : 0">
-            <el-card :body-style="{ padding: '0px' }">
-                <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                    class="image" />
-                <div style="padding: 14px">
-                    <span>Yummy hamburger</span>
-                    <div class="bottom">
-                        <time class="time">{{ currentDate }}</time>
-                        <el-button text class="button">Operating</el-button>
-                    </div>
-                </div>
-            </el-card>
-        </el-col>
-    </el-row>
+    <div class="block text-center" m="t-4">
+        <span class="demonstration">Switch when indicator is clicked</span>
+        <el-carousel trigger="click" height="150px">
+            <el-carousel-item >
+                <h3 class="small justify-center" text="2xl">1</h3>
+            </el-carousel-item>
+            <el-carousel-item >
+                <h3 class="small justify-center" text="2xl">1</h3>
+            </el-carousel-item>
+            <el-carousel-item >
+                <h3 class="small justify-center" text="2xl">1</h3>
+            </el-carousel-item>
+            <el-carousel-item >
+                <h3 class="small justify-center" text="2xl">1</h3>
+            </el-carousel-item>
+        </el-carousel>
+    </div>
 </template>
   
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const currentDate = ref(new Date())
-</script>
-  
-<style>
-.time {
-    font-size: 12px;
-    color: #999;
+<style scoped>
+.demonstration {
+    color: var(--el-text-color-secondary);
 }
 
-.bottom {
-    margin-top: 13px;
-    line-height: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.el-carousel__item h3 {
+    color: #475669;
+    opacity: 0.75;
+    line-height: 150px;
+    margin: 0;
+    text-align: center;
 }
 
-.button {
-    padding: 0;
-    min-height: auto;
+.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
 }
 
-.image {
-    width: 100%;
-    display: block;
+.el-carousel__item:nth-child(2n + 1) {
+    background-color: #d3dce6;
 }
 </style>
   
