@@ -128,13 +128,45 @@
         </div>
 
       </div>
-      <div class="Auto-Insert-right" >
+      <div class="Auto-Insert-right">
         <AutoInsert></AutoInsert>
       </div>
     </div>
   </section>
 
   <section id="section4">
+    <div style="color: #0F62FE;">
+      <h4 style="font-weight: bold;">心❤️之所属</h4>
+      <h1 style="color: black;font-weight: bold;">体验优化,畅所澎湃</h1>
+      <p style="color: black;" >盘络上传,针对站点进行单独定制优化,体验更方便、更快速、太棒了!</p>
+    </div>
+    <div class="Belongs">
+      <div class="container">
+        <div class="card">
+          <h2>V2EX</h2>
+          <div class="content">
+            <h3>V2EX</h3>
+            <p>链接智能识别并转换为图片,可配合v2ex plus插件无冲突</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Discuz</h2>
+          <div class="content">
+            <h3>Discuz</h3>
+            <p>链接智能识别并转换为图片,Discuz程序无差别识别转换</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Nodeseek</h2>
+          <div class="content">
+            <h3>Nodeseek</h3>
+            <p>链接智能识别并转换为图片,Nodeseek转换专属转换标识</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="section5">
     <h1>了解扩展最新消息</h1>
     <h2><a href="https://t.me/pnglog">加入讨论组</a></h2>
     <div class="privacy mx-auto">
