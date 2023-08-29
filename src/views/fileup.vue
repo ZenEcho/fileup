@@ -7,7 +7,7 @@
       <div class="app_neme mx-auto">
         <h1>盘络上传</h1>
       </div>
-      <h2 class="text-light text-center p-5">为用户提供简单快速的文件上传功能，使用户可以快速获取外链并分享！</h2>
+      <h2 class="text-light text-center p-5">为您提供简单快速的文件上传，让您能够迅速获取外链并分享！</h2>
       <div class="text-center">
         <a class="btn btn-danger btn-lg DownloadButton"
           href="https://microsoftedge.microsoft.com/addons/detail/%E7%9B%98%E7%BB%9C%E4%B8%8A%E4%BC%A0/knmklgmbbbaadnfokcokobnlihdiiloe"
@@ -66,11 +66,11 @@
     <div class="Auto-Insert">
       <div class="Auto-Insert-left">
         <div class="Auto-Insert-illustrate">
-          <p><span class="Auto-Insert-t">盘络定制功能</span></p>
+          <p><span class="Auto-Insert-t">临书易字</span></p>
           <p>
           <h1 class="Auto-Insert-h">编辑框自动插入</h1>
           </p>
-          <p><span class="Auto-Insert-i">这是一个非常方便的功能，它可以自动将您上传的图片插入到输入框/编辑框里。</span></p>
+          <p><span class="Auto-Insert-i">一个非常方便的功能，它可以自动将您上传的图片插入到输入框/编辑框里。</span></p>
         </div>
         <div style="padding: 1em;">
           <table>
@@ -122,7 +122,7 @@
             <tr>
               <td colspan="4"><strong><a
                     href="https://github.com/ZenEcho/PLExtension/blob/master/%E8%87%AA%E5%8A%A8%E6%8F%92%E5%85%A5%E6%94%AF%E6%8C%81.md"
-                    target="_blank" rel="noopener noreferrer">更多适配</a></strong></td>
+                    target="_blank" rel="noopener noreferrer">更多适配详细</a></strong></td>
             </tr>
           </table>
         </div>
@@ -160,7 +160,7 @@
       </div>
 
       <div class="BelongsContent">
-        <p>盘络上传针对站点定制优化了，链接智能识别并转换为图片。再也不怕萌新不会用图床了！</p>
+        <p>盘络上传针对站点定制优化，链接智能识别并转换为图片。再也不怕萌新不会用图床了！</p>
         <div class="BelongsBoxIMG">
           <span class="BelongsBoxSpan"></span>
           <div class="BelongsIMG">
@@ -179,8 +179,6 @@
     <h2><a href="https://t.me/pnglog">加入讨论组</a></h2>
     <div class="privacy mx-auto">
       <p>
-        <a class="btn btn-primary btn-lg DownloadButton " href="https://github.com/ZenEcho/fileup.dev" target="_blank"><i
-            class="bi bi-github"></i> 页面项目 GitHub</a>
         <a class="btn btn-primary btn-lg DownloadButton" href="https://github.com/ZenEcho/PLExtension" target="_blank"><i
             class="bi bi-github"></i> 扩展项目 GitHub</a>
       </p>
@@ -190,9 +188,6 @@
 </template>
 <script>
 import AutoInsert from '@/components/AutoInsert.vue';
-
-let Play_begins = false;
-
 export default {
   components: {
     AutoInsert,

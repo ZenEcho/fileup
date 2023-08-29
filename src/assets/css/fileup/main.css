@@ -177,9 +177,26 @@ table {
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0px);
+    animation: breathe 2s infinite;
 }
+
 .BelongsBoxSpan::before {
     content: "→";
+
+}
+
+@keyframes breathe {
+    0% {
+        transform: translate3d(-45%, -50%, 0px);
+    }
+
+    50% {
+        transform: translate3d(-55%, -50%, 0px);
+    }
+
+    100% {
+        transform: translate3d(-45%, -50%, 0px);
+    }
 }
 
 .BelongsBoxIMG img {
@@ -237,9 +254,25 @@ table {
     .BelongsBoxIMG {
         display: block;
     }
-    .BelongsBoxSpan{
-font-size: 20vw;
+
+    .BelongsBoxSpan {
+        font-size: 20vw;
     }
+
+    @keyframes breathe {
+        0% {
+            transform: translate3d(-50%, -45%, 0px);
+        }
+
+        50% {
+            transform: translate3d(-50%, -55%, 0px);
+        }
+
+        100% {
+            transform: translate3d(-50%, -45%, 0px);
+        }
+    }
+
     .BelongsBoxSpan::before {
         content: "↓";
     }
