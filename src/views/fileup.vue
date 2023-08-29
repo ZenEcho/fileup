@@ -138,31 +138,39 @@
     <div style="color: #0F62FE;">
       <h4 style="font-weight: bold;">心❤️之所属</h4>
       <h1 style="color: black;font-weight: bold;">体验优化,畅所澎湃</h1>
-      <p style="color: black;" >盘络上传,针对站点进行单独定制优化,体验更方便、更快速、太棒了!</p>
+      <p style="color: black;">盘络上传,针对站点进行单独定制优化,体验更方便、更快速、太棒了!</p>
     </div>
+    <h2
+      style="top: 100px; position: absolute; font-size: 150px; color: rgb(0 0 0 / 10%); pointer-events: none; transform: rotate(45deg); left: 0; z-index: 0;">
+      体验</h2>
     <div class="Belongs">
-      <div class="container">
-        <div class="card">
+      <div class="BelongsHead">
+        <div class="BelongsHead-item">
           <h2>V2EX</h2>
-          <div class="content">
-            <h3>V2EX</h3>
-            <p>链接智能识别并转换为图片,可配合v2ex plus插件无冲突</p>
-          </div>
+          <p>一个面向程序员、极客人群的分享交流社区</p>
         </div>
-        <div class="card">
+        <div class="BelongsHead-item">
           <h2>Discuz</h2>
-          <div class="content">
-            <h3>Discuz</h3>
-            <p>链接智能识别并转换为图片,Discuz程序无差别识别转换</p>
-          </div>
+          <p>开源社交建站系统,全球成熟度最高、覆盖率最大的建站系统之一</p>
         </div>
-        <div class="card">
+        <div class="BelongsHead-item">
           <h2>Nodeseek</h2>
-          <div class="content">
-            <h3>Nodeseek</h3>
-            <p>链接智能识别并转换为图片,Nodeseek转换专属转换标识</p>
+          <p>主机爱好者打造高品质社区，传递行业新闻，分享技术心得</p>
+        </div>
+      </div>
+
+      <div class="BelongsContent">
+        <p>盘络上传针对站点定制优化了，链接智能识别并转换为图片。再也不怕萌新不会用图床了！</p>
+        <div class="BelongsBoxIMG">
+          <span class="BelongsBoxSpan"></span>
+          <div class="BelongsIMG">
+            <img src="https://cdn-us.imgs.moe/2023/08/29/64ed42e130cd8.png" alt="未转换" title="未转换">
+          </div>
+          <div class="BelongsIMG">
+            <img src="https://cdn-us.imgs.moe/2023/08/29/64ed42e1aa87d.png" alt="已转换" title="已转换">
           </div>
         </div>
+
       </div>
     </div>
   </section>

@@ -127,91 +127,70 @@ table {
 
 #section4 {
     display: flex;
-    height: 700px;
+    height: auto;
     background: white;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .Belongs {
     color: #0F62FE;
-}
-
-.Belongs .container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
     z-index: 1;
 }
 
-.Belongs .container .card {
-    position: relative;
-    width: 280px;
-    height: 400px;
-    margin: 25px;
-    box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
+.BelongsHead {
     display: flex;
     justify-content: center;
+
+}
+
+.BelongsHead-item {
+    width: 260px;
+    margin: 16px;
+    padding: 32px;
+    box-shadow: 0px 0px 1em rgba(0, 0, 0, .5);
+    color: white;
+    background-color: #0F62FE;
+    border-radius: 16px;
+}
+
+.BelongsContent {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
-
 }
 
-.Belongs .container .card .content {
-    padding: 20px;
-    text-align: center;
-    transform: translateY(100px);
-    opacity: 0;
-    transition: 0.5s;
+.BelongsBoxIMG {
+    position: relative;
+    width: 88vw;
+    display: flex;
 }
 
-.Belongs .container .card:hover .content {
-    transform: translateY(0px);
-    opacity: 1;
-}
-.Belongs .container .card:hover h2 {
-    opacity: 0;
-}
-
-.Belongs .container .card h2 {
+.BelongsBoxSpan {
     position: absolute;
-    font-size: 3em;
-    color: rgb(0 0 0 / 10%);
-    pointer-events: none;
-    transform: rotate(45deg);
+    font-size: 120px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0px);
+}
+.BelongsBoxSpan::before {
+    content: "→";
 }
 
-.Belongs .container .card .content h3 {
-    font-size: 1.8em;
-    color: #000000;
-    z-index: 1;
+.BelongsBoxIMG img {
+    width: 100%;
+    border-radius: 24px;
 }
 
-.Belongs .container .card .content p {
-    font-size: 1em;
-    color: #000000;
-    font-weight: 300;
-}
-
-.Belongs .container .card .content a {
-    position: relative;
-    display: inline-block;
-    padding: 8px 20px;
-    margin-top: 15px;
-    background: #fff;
-    color: #000;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 500;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.BelongsIMG {
+    margin: 16px;
+    box-shadow: 0px 0px 1em rgba(0, 0, 0, .5);
+    border-radius: 24px;
 }
 
 #section5 {
@@ -243,18 +222,27 @@ table {
         padding: 30px 0;
     }
 
-    #section4 p{
+    #section4 p {
         font-size: 2.5vw;
     }
 
-    .Belongs .container {
+    .BelongsHead {
         display: block;
     }
 
-    .Belongs .container .card {
+    .BelongsHead-item {
         width: auto;
     }
 
+    .BelongsBoxIMG {
+        display: block;
+    }
+    .BelongsBoxSpan{
+font-size: 20vw;
+    }
+    .BelongsBoxSpan::before {
+        content: "↓";
+    }
 }
 
 @media screen and (max-width: 550px) {
