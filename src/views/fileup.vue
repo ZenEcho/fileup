@@ -62,6 +62,53 @@
       </button>
     </div>
   </section>
+  <section style="background-color: white;padding-top:150px;">
+    <div class="Functiondemo" style="background-color: aliceblue;">
+      <div class="Function-illustrate container">
+        <h3>将方块拖拽到虚线框里</h3>
+        <h1>拖拽上传</h1>
+        <h2 class="watermark">拖拽上传</h2>
+        <div class="drag-drop-container">
+          <div class="dragElement" draggable="true"
+            style="width: 100px; height: 100px; background-color: blue; margin: 10px; cursor: pointer;"></div>
+          <div class="dropZone">
+            <p style="margin: 0; text-align: center;">将方块拖拽到这里</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="Functiondemo">
+      <div class="Function-illustrate container">
+        <h3>对着方块右键</h3>
+        <h1>右键上传</h1>
+        <h2 class="watermark">右键上传</h2>
+        <div class="center-flex">
+          <div class="blue-box" :style="{ backgroundColor: boxColor }" @contextmenu.prevent="openContextMenu"></div>
+        </div>
+        <div v-if="showContextMenu" class="context-menu" :style="menuStyle">
+          <p @click="closeContextMenu(0)">其他...</p>
+          <p @click="closeContextMenu(1)">上传图片</p>
+          <p @click="closeContextMenu(0)">其他...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="Functiondemo" style="background-color: aliceblue;">
+      <div class="Function-illustrate container">
+        <h3>在虚线框里粘贴</h3>
+        <h1>粘贴上传</h1>
+        <h2 class="watermark">粘贴上传</h2>
+        <div class="center-flex">
+          <div class="pasteZone" @paste="handlePaste">
+            <p>在此处粘贴</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <section id="section2">
     <div class="Auto-Insert">
       <div class="Auto-Insert-left">
@@ -194,15 +241,67 @@ export default {
   },
   data() {
     return {
+      showContextMenu: false,
+      menuStyle: {
+        top: '0px',
+        left: '0px'
+      },
+      boxColor: 'blue', // 初始颜色为蓝色
     };
   },
+  methods: {
+    openContextMenu(event) {
+      this.menuStyle.top = event.clientY + 'px';
+      this.menuStyle.left = event.clientX + 'px';
+      this.showContextMenu = true;
+
+      // 添加点击外部关闭菜单的监听器
+      window.addEventListener('click', this.closeContextMenu);
+    },
+    closeContextMenu(e) {
+      this.showContextMenu = false;
+      window.removeEventListener('click', this.closeContextMenu);
+      if (e === 1) {
+        this.boxColor = 'green'; // 设置背景色为绿色
+        let Send = {
+          title: "通知",
+          type: "success",
+          content: `右键上传成功！`,
+          duration: 10
+        };
+        window.postMessage({ type: 'PLNotification', data: Send }, "*");
+      } else {
+        this.boxColor = 'red'; // 设置背景色为红色
+        // 延迟3秒
+        setTimeout(() => {
+          this.boxColor = 'blue'; // 设置背景色为红色
+        }, 2000);
+      }
+    },
+
+    handlePaste(event) {
+      event.preventDefault();
+      let Send = {
+        title: "通知",
+        type: "success",
+        content: `粘贴上传成功`,
+        duration: 10
+      };
+      window.postMessage({ type: 'PLNotification', data: Send }, "*");
+      let pasteZone = document.querySelector('.pasteZone')
+      let p = document.querySelector('.pasteZone p')
+      pasteZone.style.borderColor = 'blue';
+      p.textContent = "粘贴上传成功"
+      setTimeout(() => {
+        p.textContent = "在此处粘贴"
+        pasteZone.style.borderColor = '#ccc';
+      }, 5000);
+    }
+  },
   beforeDestroy() {
-
-  },
-  mounted() {
-
-
-  },
+    // 确保移除监听器
+    window.removeEventListener('click', this.closeContextMenu);
+  }
 }
 </script>
 <style scoped>

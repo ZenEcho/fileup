@@ -29,6 +29,93 @@ section {
     color: #0F62FE;
 }
 
+.Functiondemo {
+    padding: 150px 0;
+    color: #000;
+    position: relative;
+
+    & h3 {
+        color: #0F62FE;
+    }
+}
+
+.watermark {
+    position: absolute;
+    font-size: 100px;
+    color: rgb(0 0 0 / 10%);
+    pointer-events: none;
+    right: 0;
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+.drag-drop-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.dropZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.center-flex {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.blue-box {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+}
+
+.context-menu {
+    position: fixed;
+    border: 1px solid #ccc;
+    background-color: white;
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 0px 5px;
+}
+
+.context-menu p {
+    min-width: 100px;
+    margin: 5px 0;
+    padding: 5px;
+    text-align: center;
+    cursor: default;
+}
+
+.context-menu p:hover {
+    background-color: #eee;
+}
+
+.dropZone,.pasteZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
 .Function-illustrate {
     text-align: left;
 
