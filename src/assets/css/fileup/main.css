@@ -81,6 +81,7 @@ section {
     width: 200px;
     height: 200px;
     margin: 10px;
+    background-color: blue;
 }
 
 .context-menu {
@@ -104,7 +105,8 @@ section {
     background-color: #eee;
 }
 
-.dropZone,.pasteZone {
+.dropZone,
+.pasteZone {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,6 +121,54 @@ section {
 .Function-illustrate {
     text-align: left;
 
+}
+
+.flicker-border {
+    animation: borderColorFlicker 1s infinite;
+}
+
+@keyframes borderColorFlicker {
+
+    0%,
+    100% {
+        border-color: #eee;
+    }
+
+    50% {
+        border-color: blue;
+    }
+}
+
+.flicker-backgroundColor {
+    animation: backgroundColorFlicker 1.5s infinite;
+}
+
+.flicker-backgroundColorRed {
+    animation: backgroundColorRedFlicker 1.5s infinite;
+}
+
+@keyframes backgroundColorFlicker {
+
+    0%,
+    100% {
+        background-color: green;
+    }
+
+    50% {
+        background-color: rgb(0, 185, 0);
+    }
+}
+
+@keyframes backgroundColorRedFlicker {
+
+    0%,
+    100% {
+        background-color: red;
+    }
+
+    50% {
+        background-color: rgb(210, 0, 0);
+    }
 }
 
 .Function-illustrate h1,

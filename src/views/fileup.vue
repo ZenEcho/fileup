@@ -69,12 +69,13 @@
         <h1>拖拽上传</h1>
         <h2 class="watermark">拖拽上传</h2>
         <div class="drag-drop-container">
-          <div class="dragElement" draggable="true"
-            style="width: 100px; height: 100px; background-color: blue; margin: 10px; cursor: pointer;"></div>
-          <div class="dropZone">
+          <div class="dragElement" draggable="true" @dragstart="dragStart" @dragend="dragEnd"
+            style="width: 100px; height: 100px; background-color: blue; margin: 10px; cursor: pointer;">
+          </div>
+          <div class="dropZone" @dragover.prevent="dragOver" @drop="drop"
+            style="width: 300px; height: 200px; border: 2px dashed #ccc; margin: 10px;">
             <p style="margin: 0; text-align: center;">将方块拖拽到这里</p>
           </div>
-
         </div>
       </div>
     </div>
@@ -84,7 +85,7 @@
         <h1>右键上传</h1>
         <h2 class="watermark">右键上传</h2>
         <div class="center-flex">
-          <div class="blue-box" :style="{ backgroundColor: boxColor }" @contextmenu.prevent="openContextMenu"></div>
+          <div class="blue-box" @contextmenu.prevent="openContextMenu"></div>
         </div>
         <div v-if="showContextMenu" class="context-menu" :style="menuStyle">
           <p @click="closeContextMenu(0)">其他...</p>
@@ -93,7 +94,6 @@
         </div>
       </div>
     </div>
-
     <div class="Functiondemo" style="background-color: aliceblue;">
       <div class="Function-illustrate container">
         <h3>在虚线框里粘贴</h3>
@@ -106,7 +106,6 @@
         </div>
       </div>
     </div>
-
   </section>
 
   <section id="section2">
@@ -246,7 +245,6 @@ export default {
         top: '0px',
         left: '0px'
       },
-      boxColor: 'blue', // 初始颜色为蓝色
     };
   },
   methods: {
@@ -262,23 +260,21 @@ export default {
       this.showContextMenu = false;
       window.removeEventListener('click', this.closeContextMenu);
       if (e === 1) {
-        this.boxColor = 'green'; // 设置背景色为绿色
         let Send = {
           title: "通知",
           type: "success",
-          content: `右键上传成功！`,
+          content: `右键上传成功`,
           duration: 10
         };
         window.postMessage({ type: 'PLNotification', data: Send }, "*");
-      } else {
-        this.boxColor = 'red'; // 设置背景色为红色
-        // 延迟3秒
-        setTimeout(() => {
-          this.boxColor = 'blue'; // 设置背景色为红色
-        }, 2000);
+        document.querySelector('.blue-box').className="blue-box flicker-backgroundColor"
+      }else{
+        document.querySelector('.blue-box').className="blue-box flicker-backgroundColorRed"
       }
+      setTimeout(() => {
+        document.querySelector('.blue-box').className="blue-box"
+      }, 5000);
     },
-
     handlePaste(event) {
       event.preventDefault();
       let Send = {
@@ -290,11 +286,40 @@ export default {
       window.postMessage({ type: 'PLNotification', data: Send }, "*");
       let pasteZone = document.querySelector('.pasteZone')
       let p = document.querySelector('.pasteZone p')
-      pasteZone.style.borderColor = 'blue';
+      pasteZone.classList.add("flicker-border")
       p.textContent = "粘贴上传成功"
       setTimeout(() => {
         p.textContent = "在此处粘贴"
-        pasteZone.style.borderColor = '#ccc';
+        pasteZone.classList.remove("flicker-border")
+      }, 5000);
+    },
+    dragStart(event) {
+      // 可以在此设置需要传递的数据
+      event.dataTransfer.setData("text/plain", "dragging");
+      event.target.style.opacity = 0.3;
+    },
+    dragEnd(event) {
+      // 拖拽操作结束时的逻辑
+      event.target.style.opacity = 1;
+    },
+    dragOver(event) {
+      // 可能需要阻止默认行为来允许放置
+      event.preventDefault();
+    },
+    drop(event) {
+      event.preventDefault();
+      document.querySelector('.dropZone p').textContent = "拖拽上传成功"
+      event.target.classList.add("flicker-border")
+      let Send = {
+        title: "通知",
+        type: "success",
+        content: `拖拽上传成功`,
+        duration: 10
+      };
+      window.postMessage({ type: 'PLNotification', data: Send }, "*");
+      setTimeout(() => {
+        document.querySelector('.dropZone p').textContent = "将方块拖拽到这里"
+        event.target.classList.remove("flicker-border")
       }, 5000);
     }
   },
