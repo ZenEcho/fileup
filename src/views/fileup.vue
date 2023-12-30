@@ -220,6 +220,48 @@
       </div>
     </div>
   </section>
+  <section>
+    <div class="friend-links-container">
+      <div class="friend-links-slider" id="friendLinksSlider">
+        <div class="friend-link">
+          <img src="https://wmimg.com/favicon.ico" >
+          <div class="link-info">
+            <a href="https://wmimg.com/" target="_blank">无铭图床</a>
+            <span class="link-description">您的极致云上图床！</span>
+          </div>
+        </div>
+        <div class="friend-link">
+          <img src="https://jkapi.com/favicon.ico" >
+          <div class="link-info">
+            <a href="https://jkapi.com/" target="_blank">无铭API</a>
+            <span class="link-description">稳定、快速、免费的 API 接口服务</span>
+          </div>
+        </div>
+        <div class="friend-link">
+          <img src="http://link.mhimg.cn/favicon.ico" >
+          <div class="link-info">
+            <a href="https://fileup.dev/" target="_blank">萌虎导航</a>
+            <span class="link-description">萌虎导航</span>
+          </div>
+        </div>
+        <div class="friend-link">
+          <img src="https://www.freeimg.cn/favicon.ico" >
+          <div class="link-info">
+            <a href="https://www.freeimg.cn/" target="_blank">FreeImg图床</a>
+            <span class="link-description">上传图片获得外链</span>
+          </div>
+        </div>
+        <div class="friend-link">
+          <img src="https://pnglog.com/favicon.ico" >
+          <div class="link-info">
+            <a href="https://pnglog.com/" target="_blank">盘络图床</a>
+            <span class="link-description">盘络如柏芝</span>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </section>
   <section id="section5">
     <h1>了解扩展最新消息</h1>
     <h2><a href="https://t.me/pnglog">加入讨论组</a></h2>
@@ -267,12 +309,12 @@ export default {
           duration: 10
         };
         window.postMessage({ type: 'PLNotification', data: Send }, "*");
-        document.querySelector('.blue-box').className="blue-box flicker-backgroundColor"
-      }else{
-        document.querySelector('.blue-box').className="blue-box flicker-backgroundColorRed"
+        document.querySelector('.blue-box').className = "blue-box flicker-backgroundColor"
+      } else {
+        document.querySelector('.blue-box').className = "blue-box flicker-backgroundColorRed"
       }
       setTimeout(() => {
-        document.querySelector('.blue-box').className="blue-box"
+        document.querySelector('.blue-box').className = "blue-box"
       }, 5000);
     },
     handlePaste(event) {
@@ -321,7 +363,30 @@ export default {
         document.querySelector('.dropZone p').textContent = "将方块拖拽到这里"
         event.target.classList.remove("flicker-border")
       }, 5000);
+    },
+    initSlider() {
+      const slider = document.getElementById('friendLinksSlider');
+      let items = slider.children;
+      let currentX = 0;
+
+
+
+      const moveSlider = () => {
+        currentX -= 1;
+        if (Math.abs(currentX) >= items[0].offsetWidth + 20) {
+          slider.appendChild(items[0]);
+          currentX += items[0].offsetWidth + 20;
+          items = slider.children;
+        }
+        slider.style.transform = `translateX(${currentX}px)`;
+        console.log(currentX)
+      }
+
+      setInterval(moveSlider, 30); // 每30ms移动一次
     }
+  },
+  mounted() {
+    this.initSlider();
   },
   beforeDestroy() {
     // 确保移除监听器

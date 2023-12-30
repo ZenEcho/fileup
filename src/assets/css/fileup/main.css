@@ -347,6 +347,62 @@ table {
     border-radius: 24px;
 }
 
+
+.friend-links-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 30px 0;
+    background-color: #eee;
+  }
+
+  .friend-links-slider {
+    display: flex;
+    will-change: transform;
+    justify-content: center;
+  }
+
+  .friend-link {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin-right: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .friend-link img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+
+  .friend-link a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .friend-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .friend-link .link-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 5px 0;
+  }
+
+  .link-description {
+    font-size: 12px;
+    color: #666;
+  }
+
 #section5 {
     height: 300px;
     display: flex;
