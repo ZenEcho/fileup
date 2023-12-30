@@ -240,7 +240,7 @@
         <div class="friend-link">
           <img src="http://link.mhimg.cn/favicon.ico" >
           <div class="link-info">
-            <a href="https://fileup.dev/" target="_blank">萌虎导航</a>
+            <a href="http://link.mhimg.cn/" target="_blank">萌虎导航</a>
             <span class="link-description">萌虎导航</span>
           </div>
         </div>
