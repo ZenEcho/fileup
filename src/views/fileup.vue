@@ -222,6 +222,9 @@
   </section>
   <section>
     <div class="friend-links-container">
+      <div>
+        <h1 style="color: #0F62FE;font-weight: 800;margin-bottom: 20px;">友情链接</h1>
+      </div>
       <div class="friend-links-slider" id="friendLinksSlider">
         <div class="friend-link">
           <img src="https://wmimg.com/favicon.ico" >
@@ -368,9 +371,6 @@ export default {
       const slider = document.getElementById('friendLinksSlider');
       let items = slider.children;
       let currentX = 0;
-
-
-
       const moveSlider = () => {
         currentX -= 1;
         if (Math.abs(currentX) >= items[0].offsetWidth + 20) {
@@ -379,7 +379,6 @@ export default {
           items = slider.children;
         }
         slider.style.transform = `translateX(${currentX}px)`;
-        console.log(currentX)
       }
 
       setInterval(moveSlider, 30); // 每30ms移动一次
